@@ -4,6 +4,7 @@ var router  = express.Router();
 var usersController           = require('../controllers/usersController');
 var authenticationsController = require('../controllers/authenticationsController');
 var teamsController           = require('../controllers/teamsController');
+var jobsController           = require('../controllers/jobsController');
 
 router.post('/login', authenticationsController.login);
 router.post('/register', authenticationsController.register);
@@ -18,7 +19,7 @@ router.route('/users/:id')
 
 router.route('/teams')
 .get(teamsController.teamsIndex)
-.post(teamsCreate.teamsIndex);
+.post(teamsController.teamsCreate);
 
 router.route('/teams/:id')
 .get(teamsController.teamsShow)
@@ -27,7 +28,7 @@ router.route('/teams/:id')
 
 router.route('/jobs')
 .get(jobsController.jobsIndex)
-.post(jobsCreate.jobsIndex);
+.post(jobsController.jobsCreate);
 
 router.route('/jobs/:id')
 .get(jobsController.jobsShow)

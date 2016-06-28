@@ -1,45 +1,51 @@
 var Job   = require('../models/job');
 
-function jobsIndex(req, res) {
-  Job.find(function(err, jobs){
-    if (err) return res.status(404).json({message: 'Something went wrong.'});
-    res.status(200).json({ jobs: jobs });
+function jobsIndex(req, res){
+  Job.find({}, function(err, job) {
+    if (err) return res.status(404).json(err);
+    res.status(200).json(jobs);
+  });
+}
+
+function jobsCreate(req, res){
+  var job = new Job(req.body.job);
+  job.save(function(err, job){
+    if (err) return res.status(500).json(err);
+    res.status(201).json({ job: job });
   });
 }
 
 function jobsShow(req, res){
-  Job.findById(req.params.id)
-  .exec(function(err, job){
+  User.findById(req.params.id)
+  .populate("members")
+  .exec(function(err, user){
     if (err) return res.status(404).json({message: 'Something went wrong.'});
-    res.status(200).json({ job: job });
+    res.status(200).json({ user: user });
   });
 }
 
 function jobsUpdate(req, res){
-  Job.findById(req.params.id,  function(err, job) {
-    if (err) return res.status(500).json({message: "Something went wrong!"});
-    if (!job) return res.status(404).json({message: 'No job found.'});
+  var id = req.params.id;
 
-    if (req.body.email) job.local.email = req.body.name;
-    if (req.body.password) job.local.password = req.body.password;
-
-    job.save(function(err) {
-     if (err) return res.status(500).json({message: "Something went wrong!"});
-
-      res.status(201).json({message: 'Job successfully updated.', job: job});
-    });
+  Job.findByIdAndUpdate({ _id: id }, req.body, function(err, job){
+    if (err) return res.status(500).json(err);
+    if (!job) return res.status(404).json(err);
+    res.status(200).json({ job: job });
   });
 }
 
 function jobsDelete(req, res){
-  Job.findByIdAndRemove({_id: req.params.id}, function(err){
-   if (err) return res.status(500).json({message: 'Something went wrong.'});
-   res.status(200).json({message: 'Job has been successfully deleted'});
+  var id = req.params.id;
+
+  Job.remove({ _id: id }, function(err) {
+    if (err) return res.status(500).json(err);
+    res.status(200).json({ message: "Deleted!" });
   });
 }
 
 module.exports = {
   jobsIndex:  jobsIndex,
+  jobsCreate: jobsCreate,
   jobsShow:   jobsShow,
   jobsUpdate: jobsUpdate,
   jobsDelete: jobsDelete
