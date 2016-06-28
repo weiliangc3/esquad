@@ -6203,3 +6203,12 @@ a.bg-danger:focus, a.bg-danger:hover {
 }
 
 /*# sourceMappingURL=bootstrap.css.map */
+nav.navbar.shrink {
+  min-height: 35px;
+}
+
+nav.navbar {
+  background-color: #ccc;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}

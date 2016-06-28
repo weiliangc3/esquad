@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var bcrypt   = require('bcrypt-nodejs');
+var review   = require("./review");
 
 var userSchema = mongoose.Schema({
   local: {
@@ -8,7 +9,12 @@ var userSchema = mongoose.Schema({
     email:    { type: String, unique: true, required: true },
     password: { type: String, required: true }
   },
-  tournaments: [{ type: mongoose.Schema.ObjectId, ref: 'Tournament' }]
+  teams:          [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
+  teamsApplied:   [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
+  teamsInvited:   [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
+  backup:         [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  skills:         [String],
+  reviews:        [review],
 }, {
   timestamps: true
 });
