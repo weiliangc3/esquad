@@ -14,7 +14,7 @@ var userSchema = mongoose.Schema({
   backup:         [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   skills:         [String],
   reviews:        [review],
-  type:           String
+  userType:       String
 }, {
   timestamps: true
 });

@@ -13,7 +13,7 @@
 </div>
 
 
-<form id="login" ng-show="Users.userType === 'squaddie'" name="Users.registerForm" ng-submit="Users.register()" novalidate>
+<form id="register" ng-show="Users.userType === 'squaddie'" name="Users.registerForm" ng-submit="Users.register()" novalidate>
   <div ng-show="(!!Users.error && Users.registerForm.$submitted)">{{ Users.error }}</div>
   <fieldset class="form-group">
     <label for="fullname">Full name</label>
@@ -39,6 +39,7 @@
     <span>Error:</span>
     <span ng-message="required">Password is required.</span>
   </div>
+  <input type="hidden" value="squaddie" ng-model="Users.user.userType">
 
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
