@@ -4,7 +4,6 @@ var review   = require("./review");
 
 var userSchema = mongoose.Schema({
   local: {
-    username: { type: String, required: true, unique: true },
     fullname: { type: String },
     email:    { type: String, unique: true, required: true },
     password: { type: String, required: true }
@@ -15,6 +14,7 @@ var userSchema = mongoose.Schema({
   backup:         [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   skills:         [String],
   reviews:        [review],
+  type:           String
 }, {
   timestamps: true
 });

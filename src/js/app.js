@@ -18,8 +18,43 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       templateUrl: "../views/statics/home.html",
       onEnter: function(){
       }
+    })
+    .state('login', {
+      url: "/login",
+      templateUrl: "../views/authentication/login.html",
+      onEnter: function(){
+      }
+    })
+    .state('register', {
+      url: "/register",
+      templateUrl: "../views/authentication/register.html",
+      onEnter: function(){
+      }
+    })
+    .state('teams.show', {
+      url: "/teams/:teamid",
+      templateUrl: "../views/teams/show.html",
+      onEnter: function(){
+      }
+    })
+    .state('teams.index', {
+      url: "/teams",
+      templateUrl: "../views/teams/index.html",
+      onEnter: function(){
+      }
+    })
+    .state('teams.edit', {
+      url: "/teams/:teamid/edit",
+      templateUrl: "../views/teams/edit.html",
+      onEnter: function(){
+      }
+    })
+    .state('teams.new', {
+      url: "/teams/new",
+      templateUrl: "../views/teams/new.html",
+      onEnter: function(){
+      }
     });
-
 
   $urlRouterProvider.otherwise("/");
 }

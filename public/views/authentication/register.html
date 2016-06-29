@@ -1,0 +1,44 @@
+<h1 class="display-3">Register<span ng-show="Users.userType !== null"> as a {{Users.userType}}</span></h1>
+<div class="btn btn-primary" ng-show="Users.userType !== null" ng-click="Users.userType = null  ">Not a {{Users.userType}}?</div>
+
+<div ng-show="Users.userType === null" class="container-fluid">
+  <div class="row register-choice">
+    <div class="col-xs-12 col-sm-6 choice" ng-click="Users.userType = 'squaddie'">
+      <p class="align-both">Looking to be part of a team or start a team?</p>
+    </div>
+    <div class="col-xs-12 col-sm-6 choice" ng-click="Users.userType = 'client'">
+      <p class="align-both">Looking to hire a team?</p>
+    </div>
+  </div>
+</div>
+
+
+<form id="login" ng-show="Users.userType === 'squaddie'" name="Users.registerForm" ng-submit="Users.register()" novalidate>
+  <div ng-show="(!!Users.error && Users.registerForm.$submitted)">{{ Users.error }}</div>
+  <fieldset class="form-group">
+    <label for="fullname">Full name</label>
+    <input type="text" class="form-control" id="fullname" placeholder="Full name" ng-model="Users.user.fullname">
+    <small class="text-muted">This will be the name others will see you as.</small>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="Users.user.email">
+    <small class="text-muted">We'll never share your email with anyone else.</small>
+  </fieldset>
+  <div ng-messages="Users.updateForm['email'].$error" ng-show="(Users.updateForm.$submitted && Users.updateForm['email'].$invalid)">
+    <span>Error:</span>
+    <span ng-message="required">Email is required.</span>
+  </div>
+
+  <fieldset class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="Users.user.password">
+  </fieldset>
+  <div ng-messages="Users.updateForm['password'].$error" ng-show="(Users.updateForm.$submitted && Users.updateForm['password'].$invalid)">
+    <span>Error:</span>
+    <span ng-message="required">Password is required.</span>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

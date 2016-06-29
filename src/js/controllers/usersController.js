@@ -16,6 +16,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
+  self.userType      = null;
 
   if ($stateParams.userId){
     self.user = User.get({ id: $stateParams.userId }, function(res){
@@ -34,7 +35,12 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     if (token){
       self.currentUser = CurrentUser.getUser();
       self.getUsers();
-      $state.go("tournaments");
+      self.userType = self.currentUser.type;
+      if (self.userType === "squaddie"){
+        $state.go("teams");
+      } else{
+        $state.go("home");
+      }
     }
   }
 

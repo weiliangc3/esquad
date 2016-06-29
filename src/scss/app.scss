@@ -1,18 +1,74 @@
 @import "_bower";
+@mixin vertical-align {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+@mixin align-both {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%,-50%);
+}
+.vertical-align{
+  @include vertical-align;
+}
+.align-both{
+  @include align-both;
+}
 
+// Universal CSS
+main {
+  padding-top: 50px
+}
 
-
-
-
-
-
+main {
+  div.jumbotron.home{
+    background: url("/images/team1.jpg");
+    background-size: cover;
+  }
+}
 // Navbar
 nav.navbar.shrink {
   min-height: 35px;
 }
 nav.navbar{
-  background-color:#ccc;
+  background-color:#7DA0B4;
    // Animation
    -webkit-transition: all 0.4s ease;
    transition: all 0.4s ease;
+}
+
+// Home
+main {
+  div.jumbotron.home{
+    background: url("/images/team6.jpg");
+    background-size: cover;
+  }
+}
+
+// Register
+main{
+  div.row.register-choice{
+    div.choice{
+      min-height: 15em;
+      background-color: #7DA0B4;
+      cursor: pointer;
+      position: relative;
+      p.align-both{
+        text-align: center;
+      }
+    }
+    div.choice:hover{
+      background-color: #4F7A93;
+    }
+  }
+}
+
+// Login
+main{
 }

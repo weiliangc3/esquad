@@ -10,12 +10,15 @@ module.exports = function(grunt){
           'js': 'src/js/_bower.js',
           'css': 'src/scss/_bower.scss'
         },
-    mainFiles: {
-      bootstrap: [
-        'dist/js/bootstrap.js',
-        'dist/css/bootstrap.css'
-      ]
-    }
+        mainFiles: {
+          bootstrap: [
+            'dist/js/bootstrap.js',
+            'dist/css/bootstrap.css'
+          ]
+        },
+        dependencies: {
+          bootstrap: ["jquery","tether"]
+        }
       },
     },
     sass: {
