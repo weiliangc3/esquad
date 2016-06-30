@@ -35,7 +35,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     if (token){
       self.currentUser = CurrentUser.getUser();
       self.getUsers();
-      self.userType = self.currentUser.type;
+      self.userType = self.currentUser.userType;
       if (self.userType === "squaddie"){
         $state.go("teams");
       } else{

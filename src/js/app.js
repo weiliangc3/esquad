@@ -1,6 +1,6 @@
 angular
 .module('eSquad', ['ngResource', 'angular-jwt','ui.router','ngFileUpload'])
-.constant('API', 'https://localhost:3000/api')
+.constant('API', 'http://localhost:3000/api')
 .constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
 .config(MainRouter)
 .config(function($httpProvider){

@@ -55289,7 +55289,7 @@ ngFileUpload.service('UploadExif', ['UploadResize', '$q', function (UploadResize
 
 angular
 .module('eSquad', ['ngResource', 'angular-jwt','ui.router','ngFileUpload'])
-.constant('API', 'https://localhost:3000/api')
+.constant('API', 'http://localhost:3000/api')
 .constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
 .config(MainRouter)
 .config(function($httpProvider){
@@ -55394,7 +55394,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     if (token){
       self.currentUser = CurrentUser.getUser();
       self.getUsers();
-      self.userType = self.currentUser.type;
+      self.userType = self.currentUser.userType;
       if (self.userType === "squaddie"){
         $state.go("teams");
       } else{
