@@ -37,7 +37,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
       self.getUsers();
       self.userType = self.currentUser.userType;
       if (self.userType === "squaddie"){
-        $state.go("teams");
+        $state.go("dashboard");
       } else{
         $state.go("home");
       }
@@ -48,7 +48,9 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     self.error = "Something went wrong.";
   }
 
-  function register() {
+  function register(userType) {
+    self.user.userType = userType;
+    console.log(self.user);
     User.register(self.user, handleLogin, handleError);
   }
 

@@ -31,6 +31,12 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       onEnter: function(){
       }
     })
+    .state('dashboard', {
+      url: "/dashboard",
+      templateUrl: "../views/dashboard.html",
+      onEnter: function(){
+      }
+    })
     .state('teams.show', {
       url: "/teams/:teamid",
       templateUrl: "../views/teams/show.html",

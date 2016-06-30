@@ -1,1 +1,27 @@
 <h1>Login</h1>
+
+
+<form id="login" name="Users.loginForm" ng-submit="Users.login()" novalidate>
+  <div ng-show="(!!Users.error && Users.registerForm.$submitted)">{{ Users.error }}</div>
+
+  <fieldset class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="Users.user.email">
+  </fieldset>
+  <div ng-messages="Users.updateForm['email'].$error" ng-show="(Users.updateForm.$submitted && Users.updateForm['email'].$invalid)">
+    <span>Error:</span>
+    <span ng-message="required">Email is required.</span>
+  </div>
+
+  <fieldset class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="Users.user.password">
+  </fieldset>
+  <div ng-messages="Users.updateForm['password'].$error" ng-show="(Users.updateForm.$submitted && Users.updateForm['password'].$invalid)">
+    <span>Error:</span>
+    <span ng-message="required">Password is required.</span>
+  </div>
+  <input type="hidden" value="squaddie" ng-model="Users.user.userType">
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
