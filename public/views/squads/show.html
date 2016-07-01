@@ -3,9 +3,15 @@
     Squad Show
   </p>
 
+  <p>
+    {{Squads.squad.description}}
+  </p>
+
   <div class="btn btn-default" ng-click="Squads.testFunction()">
     TESTER
   </div>
+
+  <button type="button" name="button" class="btn btn-default" ng-if="Squads.squad.members.indexOf(Users.user) === -1">Apply to join this.</button>
 
 
   <button class="btn btn-default" ng-click="Squads.deleteSquad(Squads.squad._id)">Delete Squad</button>

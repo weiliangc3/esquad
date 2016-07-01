@@ -77,7 +77,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   // Tester function
   self.testFunction = function(){
     console.log(" User Test:");
-    console.log(this.currentUser);
+    console.log(this);
   };
 
   return self;

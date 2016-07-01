@@ -55289,8 +55289,8 @@ ngFileUpload.service('UploadExif', ['UploadResize', '$q', function (UploadResize
 
 angular
 .module('eSquad', ['ngResource', 'angular-jwt','ui.router','ngFileUpload'])
-// .constant('API', 'http://localhost:3000/api')
-.constant('API', 'https://thisisesquad.herokuapp.com/api')
+.constant('API', 'http://localhost:3000/api')
+// .constant('API', 'https://thisisesquad.herokuapp.com/api')
 .constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
 .config(MainRouter)
 .config(function($httpProvider){
@@ -55420,15 +55420,43 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   function getSquad(){
     Squad.get({ id: $stateParams.squadId }, function(res){
       self.squad = res.squad;
+      self.isLeader   = false;
+      self.isMember   = false;
+      self.isInvited  = false;
+      self.isApplied  = false;
+      // Check user's relationship to squad
+      for (i=0; i < self.squad.appliedMembers.length; i++){
+        if (self.squad.appliedMembers[i]._id === $scope.$parent.Users.currentUser._id) {
+          self.isInvited      = true;
+        }
+      }
+      for (i=0; i < self.squad.invitedMembers.length; i++){
+        if (self.squad.invitedMembers[i]._id === $scope.$parent.Users.currentUser._id) {
+          self.isInvited      = true;
+        }
+      }
+      for (i=0; i < self.squad.members.length; i++){
+        if (self.squad.members[i]._id === $scope.$parent.Users.currentUser._id) {
+          self.isMember      = true;
+        }
+      }
+      for (i=0; i < self.squad.leaders.length; i++){
+        if (self.squad.leaders[i]._id === $scope.$parent.Users.currentUser._id) {
+          self.isLeader      = true;
+          self.isMember      = true;
+        }
+      }
     });
   }
 
   // Functions
   function createSquad(){
     self.squad.specialties  = [];
-    if (!!self.newSquad.specialty1) self.squad.specialties.push(self.newSquad.specialty1);
-    if (!!self.newSquad.specialty2) self.squad.specialties.push(self.newSquad.specialty2);
-    if (!!self.newSquad.specialty3) self.squad.specialties.push(self.newSquad.specialty3);
+    if (!!self.newSquad){
+      if (!!self.newSquad.specialty1) self.squad.specialties.push(self.newSquad.specialty1);
+      if (!!self.newSquad.specialty2) self.squad.specialties.push(self.newSquad.specialty2);
+      if (!!self.newSquad.specialty3) self.squad.specialties.push(self.newSquad.specialty3);
+    }
     self.squad.leaders      = [];
     self.squad.leaders.push($scope.$parent.Users.currentUser);
     self.squad.members      = [];
@@ -55450,11 +55478,10 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     });
   }
 
-
   // Tester function
   self.testFunction = function(){
     console.log("Squad Test:");
-    console.log(this.squad);
+    console.log(this);
   };
 
 }
@@ -55538,7 +55565,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   // Tester function
   self.testFunction = function(){
     console.log(" User Test:");
-    console.log(this.currentUser);
+    console.log(this);
   };
 
   return self;
