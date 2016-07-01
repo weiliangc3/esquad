@@ -55416,7 +55416,6 @@ function UsersController(User, CurrentUser, $state, $stateParams){
 
   function register(userType) {
     self.user.userType = userType;
-    console.log(self.user);
     User.register(self.user, handleLogin, handleError);
   }
 
