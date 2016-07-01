@@ -55327,33 +55327,31 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       onEnter: function(){
       }
     })
-    .state('squadsShow', {
-      url: "/squads/:squadId",
-      templateUrl: "../views/squads/show.html",
-      onEnter: function(){
-      }
-    })
     .state('squadsIndex', {
       url: "/squads",
       templateUrl: "../views/squads/index.html",
-      onEnter: function(){
-      }
-    })
-    .state('squadsEdit', {
-      url: "/squads/:squadId/edit",
-      templateUrl: "../views/squads/edit.html",
+      controller: "SquadsController as Squads",
       onEnter: function(){
       }
     })
     .state('squadsNew', {
       url: "/squads/new",
       templateUrl: "../views/squads/new.html",
+      controller: "SquadsController as Squads",
       onEnter: function(){
       }
     })
-    .state('usersShow', {
-      url: "/users/:userId",
-      templateUrl: "../views/users/show.html",
+    .state('squadsShow', {
+      url: "/squads/:squadId",
+      templateUrl: "../views/squads/show.html",
+      controller: "SquadsController as Squads",
+      onEnter: function(){
+      }
+    })
+    .state('squadsEdit', {
+      url: "/squads/:squadId/edit",
+      templateUrl: "../views/squads/edit.html",
+      controller: "SquadsController as Squads",
       onEnter: function(){
       }
     })
@@ -55366,6 +55364,14 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
     .state('usersEdit', {
       url: "/users/:userId/edit",
       templateUrl: "../views/users/edit.html",
+      controller: "UsersController as User",
+      onEnter: function(){
+      }
+    })
+    .state('usersShow', {
+      url: "/users/:userId",
+      templateUrl: "../views/users/show.html",
+      controller: "UsersController as User",
       onEnter: function(){
       }
     });
@@ -55419,6 +55425,8 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
 
   // Functions
   function createSquad(){
+    self.squad.specialties = [];
+    self.squad.specialties.push(self.newSquad.specialty1);    self.squad.specialties.push(self.newSquad.specialty2);    self.squad.specialties.push(self.newSquad.specialty3);
     var currentUserId = $scope.$parent.Users.currentUser._id;
     Squad.save({ squad: self.squad
     },
@@ -55431,8 +55439,10 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       });
     });
   }
-  function deleteSquad(){
-
+  function deleteSquad(id){
+    Squad.delete({id: id}, function(){
+      $state.go("dashboard");
+    });
   }
 
 
@@ -55451,6 +55461,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   self.user          = null;
   self.currentUser   = null;
   self.error         = null;
+  self.userType      = null;
   self.getUsers      = getUsers;
   self.register      = register;
   self.login         = login;

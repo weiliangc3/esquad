@@ -43,7 +43,7 @@ function usersDelete(req, res){
 }
 
 function usersAddSquad(req, res){
-  User.findById(req.params.id,  function(err, user) {
+  User.findById(req.body.id,  function(err, user) {
     if (err) return res.status(500).json({message: "Something went wrong!"});
     if (!user) return res.status(404).json({message: 'No user found.'});
 

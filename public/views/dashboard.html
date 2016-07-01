@@ -5,14 +5,15 @@
 
 <div ng-repeat="squad in Squads.squads">
   <h4>{{squad.name}}</h4>
+  <button class="btn btn-default" ng-click="Squads.deleteSquad(squad._id)">Delete (test button)</button>
 </div>
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xs-12 col-sm-6 div-button">
+    <div class="col-xs-12 col-sm-6 div-button" ui-sref="squadsIndex">
       <p>Join a squad</p>
     </div>
-    <div class="col-xs-12 col-sm-6 div-button">
+    <div class="col-xs-12 col-sm-6 div-button" ui-sref="squadsNew">
       <p>Create a squad</p>
     </div>
   </div>

@@ -35,6 +35,8 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
 
   // Functions
   function createSquad(){
+    self.squad.specialties = [];
+    self.squad.specialties.push(self.newSquad.specialty1);    self.squad.specialties.push(self.newSquad.specialty2);    self.squad.specialties.push(self.newSquad.specialty3);
     var currentUserId = $scope.$parent.Users.currentUser._id;
     Squad.save({ squad: self.squad
     },
@@ -47,8 +49,10 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       });
     });
   }
-  function deleteSquad(){
-
+  function deleteSquad(id){
+    Squad.delete({id: id}, function(){
+      $state.go("dashboard");
+    });
   }
 
 

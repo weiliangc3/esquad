@@ -38,33 +38,31 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       onEnter: function(){
       }
     })
-    .state('squadsShow', {
-      url: "/squads/:squadId",
-      templateUrl: "../views/squads/show.html",
-      onEnter: function(){
-      }
-    })
     .state('squadsIndex', {
       url: "/squads",
       templateUrl: "../views/squads/index.html",
-      onEnter: function(){
-      }
-    })
-    .state('squadsEdit', {
-      url: "/squads/:squadId/edit",
-      templateUrl: "../views/squads/edit.html",
+      controller: "SquadsController as Squads",
       onEnter: function(){
       }
     })
     .state('squadsNew', {
       url: "/squads/new",
       templateUrl: "../views/squads/new.html",
+      controller: "SquadsController as Squads",
       onEnter: function(){
       }
     })
-    .state('usersShow', {
-      url: "/users/:userId",
-      templateUrl: "../views/users/show.html",
+    .state('squadsShow', {
+      url: "/squads/:squadId",
+      templateUrl: "../views/squads/show.html",
+      controller: "SquadsController as Squads",
+      onEnter: function(){
+      }
+    })
+    .state('squadsEdit', {
+      url: "/squads/:squadId/edit",
+      templateUrl: "../views/squads/edit.html",
+      controller: "SquadsController as Squads",
       onEnter: function(){
       }
     })
@@ -77,6 +75,14 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
     .state('usersEdit', {
       url: "/users/:userId/edit",
       templateUrl: "../views/users/edit.html",
+      controller: "UsersController as User",
+      onEnter: function(){
+      }
+    })
+    .state('usersShow', {
+      url: "/users/:userId",
+      templateUrl: "../views/users/show.html",
+      controller: "UsersController as User",
       onEnter: function(){
       }
     });

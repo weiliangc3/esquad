@@ -1,7 +1,7 @@
 var Squad = require("../models/squad");
 
 function squadsIndex(req, res){
-  Squad.find({}, function(err, squad) {
+  Squad.find({}, function(err, squads) {
     if (err) return res.status(404).json(err);
     res.status(200).json(squads);
   });

@@ -1,1 +1,72 @@
-<h1>Team New</h1>
+<h2>Form a squad</h2>
+
+
+<div class="container">
+
+<form id="login" name="Squads.createForm" ng-submit="Squads.createSquad()" novalidate>
+  <div ng-show="(!!Squads.error && Squads.createForm.$submitted)">{{ Squads.error }}</div>
+
+  <fieldset class="form-group">
+    <label for="name">Name</label>
+    <input type="name" class="form-control" id="name" placeholder="Enter name" ng-model="Squads.squad.name">
+  </fieldset>
+  <div ng-messages="Squads.createForm['name'].$error" ng-show="(Squads.createForm.$submitted && Squads.createForm['name'].$invalid)">
+    <span>Error:</span>
+    <span ng-message="required">Name is required.</span>
+  </div>
+
+  <fieldset class="form-group">
+    <label for="location">Location</label>
+    <input type="text" class="form-control" id="location" placeholder="Enter Location" ng-model="Squads.squad.location">
+  </fieldset>
+  <small class="text-muted">Where are you based?</small>
+  <p class="site-notes">
+    Change this to an autocomplete dropdown.
+  </p>
+
+  <fieldset class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" ng-model="Squads.squad.description" rows="3"></textarea>
+    <small class="text-muted">Write a short description of your squad</small>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <label for="specialties1">First Specialty</label>
+    <select class="form-control" id="specialties1" ng-model="Squads.newSquad.specialty1">
+      <option>Baking</option>
+      <option>Frying</option>
+      <option>Sauteing</option>
+      <option>Boiling</option>
+      <option>Roasting</option>
+    </select>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="specialties2">Second Specialty</label>
+    <select class="form-control" id="specialties2" ng-model="Squads.newSquad.specialty2">
+      <option>Baking</option>
+      <option>Frying</option>
+      <option>Sauteing</option>
+      <option>Boiling</option>
+      <option>Roasting</option>
+    </select>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="specialties3">Third Specialty</label>
+    <select class="form-control" id="specialties3" ng-model="Squads.newSquad.specialty3">
+      <option>Baking</option>
+      <option>Frying</option>
+      <option>Sauteing</option>
+      <option>Boiling</option>
+      <option>Roasting</option>
+    </select>
+  </fieldset>
+  <p class="site-notes">
+    Make a hide/add/remove with a list to make this better too.
+  </p>
+
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+</div>

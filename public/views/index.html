@@ -46,7 +46,7 @@
             <a class="nav-link" href="/" ng-click="Users.logout()" ng-show="Users.checkLoggedIn()">Logout</a>
           </li>
           <li class="nav-item pull-xs-right">
-            <a class="nav-link" href="/users/{{Users.currentUser._id}}" ui-sref="users.show({ userId: Users.currentUser._id })" ng-show="Users.checkLoggedIn()">{{Users.currentUser.local.fullname}}</a>
+            <a class="nav-link" href="/users/{{Users.currentUser._id}}" ui-sref="usersShow({ userId: Users.currentUser._id })" ng-show="Users.checkLoggedIn()">{{Users.currentUser.local.fullname}}</a>
           </li>
 
         </ul>

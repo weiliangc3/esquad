@@ -11,6 +11,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   self.user          = null;
   self.currentUser   = null;
   self.error         = null;
+  self.userType      = null;
   self.getUsers      = getUsers;
   self.register      = register;
   self.login         = login;
