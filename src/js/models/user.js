@@ -20,6 +20,10 @@ function User($resource, API){
       'login':     {
         url: API + "/login",
         method: "POST"
+      },
+      'addSquad': {
+        url:API + '/users/addSquad',
+        method: 'POST'
       }
     }
   );

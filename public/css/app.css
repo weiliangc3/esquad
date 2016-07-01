@@ -6229,6 +6229,15 @@ main div.jumbotron.home {
   background-size: cover;
 }
 
+div.div-button {
+  background-color: #7DA0B4;
+  cursor: pointer;
+}
+
+div.div-button:hover {
+  background-color: #4F7A93;
+}
+
 nav.navbar.shrink {
   min-height: 35px;
 }

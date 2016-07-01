@@ -1,10 +1,24 @@
-<h1>Dashboard</h1>
+<h2>Dashboard</h2>
 
-<h3>Teams</h3>
-<div class="">
+<h3>Squads</h3>
+<div class="container dashboard-squads" ng-controller="SquadsController as Squads">
 
+<div ng-repeat="squad in Squads.squads">
+  <h4>{{squad.name}}</h4>
 </div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 div-button">
+      <p>Join a squad</p>
+    </div>
+    <div class="col-xs-12 col-sm-6 div-button">
+      <p>Create a squad</p>
+    </div>
+  </div>
+</div>
+
+</div>
 <h3>Jobs</h3>
 
 <h3>Messages</h3>
@@ -18,9 +32,6 @@
     </div>
     <div class="col-xs-12 col-sm-6">
       <p>Jobs</p>
-    </div>
-    <div class="col-xs-12 col-sm-6">
-      <p>Messages</p>
     </div>
   </div>
 </div>

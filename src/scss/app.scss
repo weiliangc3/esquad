@@ -23,15 +23,23 @@
 
 // Universal CSS
 main {
-  padding-top: 50px
-}
-
-main {
+  padding-top: 50px;
   div.jumbotron.home{
     background: url("/images/team1.jpg");
     background-size: cover;
   }
 }
+// Helper CSS
+div.div-button{
+  background-color: #7DA0B4;
+  cursor: pointer;
+}
+div.div-button:hover{
+  background-color: #4F7A93;
+}
+
+
+
 // Navbar
 nav.navbar.shrink {
   min-height: 35px;
@@ -71,4 +79,9 @@ main{
 
 // Login
 main{
+}
+
+// Dashboard
+main{
+
 }

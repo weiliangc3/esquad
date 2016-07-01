@@ -55291,7 +55291,7 @@ angular
 .module('eSquad', ['ngResource', 'angular-jwt','ui.router','ngFileUpload'])
 .constant('API', 'http://localhost:3000/api')
 // .constant('API', 'https://thisisesquad.herokuapp.com/api')
-// .constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
+.constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
 .config(MainRouter)
 .config(function($httpProvider){
   $httpProvider.interceptors.push("authInterceptor");
@@ -55328,7 +55328,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('squadsShow', {
-      url: "/squads/:squadid",
+      url: "/squads/:squadId",
       templateUrl: "../views/squads/show.html",
       onEnter: function(){
       }
@@ -55340,7 +55340,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('squadsEdit', {
-      url: "/squads/:squadid/edit",
+      url: "/squads/:squadId/edit",
       templateUrl: "../views/squads/edit.html",
       onEnter: function(){
       }
@@ -55352,7 +55352,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('usersShow', {
-      url: "/users/:userid",
+      url: "/users/:userId",
       templateUrl: "../views/users/show.html",
       onEnter: function(){
       }
@@ -55364,7 +55364,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('usersEdit', {
-      url: "/users/:userid/edit",
+      url: "/users/:userId/edit",
       templateUrl: "../views/users/edit.html",
       onEnter: function(){
       }
@@ -55381,6 +55381,62 @@ $(window).scroll(function() {
     $('nav').removeClass('shrink');
   }
 });
+
+angular
+.module('eSquad')
+.controller('SquadsController', SquadsController);
+
+SquadsController.$inject = ['User', 'Squad', '$state', '$stateParams', '$scope', 'Upload', 'API', 'AWS_URL'];
+function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API, AWS_URL){
+  var self = this;
+
+  self.createSquad   = createSquad;
+  self.deleteSquad   = deleteSquad;
+
+  // self.currentUserId      = $scope.$parent.Users.currentUser._id;
+  // self.currentUser        = $scope.$parent.Users.currentUser;
+
+  self.squads        = [];
+  self.squad         = null;
+
+  // Populate squad list
+  getSquads();
+  function getSquads(){
+    Squad.query(function(data){
+      self.squads = data;
+    });
+  }
+
+  // get Squad to show
+  if ($stateParams.squadId){
+    getSquad();
+  }
+  function getSquad(){
+    Squad.get({ id: $stateParams.squadId }, function(res){
+      self.squad = res.squad;
+    });
+  }
+
+  // Functions
+  function createSquad(){
+    var currentUserId = $scope.$parent.Users.currentUser._id;
+    Squad.save({ squad: self.squad
+    },
+    function(data){
+      User.addSquad({
+        id: currentUserId,
+        squad: data.squad
+      },function(user){
+        $state.go("dashboard");
+      });
+    });
+  }
+  function deleteSquad(){
+
+  }
+
+
+}
 
 angular
 .module('eSquad')
@@ -55461,6 +55517,25 @@ function UsersController(User, CurrentUser, $state, $stateParams){
 
 angular
   .module('eSquad')
+  .factory('Squad', Squad);
+
+Squad.$inject = ['$resource', 'API'];
+function Squad($resource, API){
+
+  return $resource(
+    API+'/squads/:id', {id: '@id'},
+    { 'get':       { method: 'GET' },
+      'save':      { method: 'POST' },
+      'query':     { method: 'GET', isArray: true},
+      'remove':    { method: 'DELETE' },
+      'delete':    { method: 'DELETE' },
+      'update':    { method: 'PUT' }
+    }
+  );
+}
+
+angular
+  .module('eSquad')
   .factory('User', User);
 
 User.$inject = ['$resource', 'API'];
@@ -55481,6 +55556,10 @@ function User($resource, API){
       'login':     {
         url: API + "/login",
         method: "POST"
+      },
+      'addSquad': {
+        url:API + '/users/addSquad',
+        method: 'POST'
       }
     }
   );

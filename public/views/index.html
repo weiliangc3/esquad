@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="eSquad">
-  <head>
-    <title>eSquad</title>
-    <!-- Required meta tags always come first -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+<head>
+  <title>eSquad</title>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/app.css" media="screen" title="no title" charset="utf-8">
-    <script src="/js/app.js" charset="utf-8"></script>
-    <base href="/">
-  </head>
-  <body ng-controller="UsersController as Users">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/app.css" media="screen" title="no title" charset="utf-8">
+  <script src="/js/app.js" charset="utf-8"></script>
+  <base href="/">
+</head>
+<body ng-controller="UsersController as Users">
 
-    <header>
-      <nav class="navbar navbar-fixed-top navbar-light bg-faded">
-        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#primary-nav-bar">
-    &#9776;
-  </button>
-        <div class="collapse navbar-toggleable-xs" id="primary-nav-bar">
+  <header>
+    <nav class="navbar navbar-fixed-top navbar-light bg-faded">
+      <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#primary-nav-bar">
+        &#9776;
+      </button>
+      <div class="collapse navbar-toggleable-xs" id="primary-nav-bar">
         <a class="navbar-brand" href="/" ui-sref="home" ng-hide="Users.checkLoggedIn()">eSquad</a>
-                <a class="navbar-brand" href="/dashboard" ui-sref="dashboard" ng-show="Users.checkLoggedIn()">eSquad</a>
+        <a class="navbar-brand" href="/dashboard" ui-sref="dashboard" ng-show="Users.checkLoggedIn()">eSquad</a>
         <ul class="nav navbar-nav">
           <li class="nav-item active">
             <a class="nav-link" href="/" ui-sref="home" ng-hide="Users.checkLoggedIn()">Home<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/users" ui-sref="usersIndex" ng-show="Users.currentUser.userType==='squaddie'">Squaddies</a>
+            <a class="nav-link" href="/dashboard" ui-sref="dashboard" ng-show="Users.currentUser.userType==='squaddie'">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/teams" ui-sref="teamsIndex" ng-show="Users.currentUser.userType==='squaddie'">Teams</a>
+            <a class="nav-link" href="/users" ui-sref="usersIndex" ng-show="Users.currentUser.userType==='squaddie'">Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/teams" ui-sref="squadsIndex" ng-show="Users.currentUser.userType==='squaddie'">Squads</a>
           </li>
 
           <li class="nav-item pull-xs-right">
@@ -48,17 +51,17 @@
 
         </ul>
       </div>
-      </nav>
-    </header>
+    </nav>
+  </header>
 
-    <main ui-view>
-      <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1 class="display-3">eSquad</h1>
-          <p class="lead">Welcome to eSquad. We're finding your page, so give us a second</p>
-        </div>
+  <main ui-view>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-3">eSquad</h1>
+        <p class="lead">Welcome to eSquad. We're finding your page, so give us a second</p>
       </div>
-    </main>
+    </div>
+  </main>
 
-  </body>
+</body>
 </html>

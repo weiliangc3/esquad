@@ -2,7 +2,7 @@ angular
 .module('eSquad', ['ngResource', 'angular-jwt','ui.router','ngFileUpload'])
 .constant('API', 'http://localhost:3000/api')
 // .constant('API', 'https://thisisesquad.herokuapp.com/api')
-// .constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
+.constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
 .config(MainRouter)
 .config(function($httpProvider){
   $httpProvider.interceptors.push("authInterceptor");
@@ -39,7 +39,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('squadsShow', {
-      url: "/squads/:squadid",
+      url: "/squads/:squadId",
       templateUrl: "../views/squads/show.html",
       onEnter: function(){
       }
@@ -51,7 +51,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('squadsEdit', {
-      url: "/squads/:squadid/edit",
+      url: "/squads/:squadId/edit",
       templateUrl: "../views/squads/edit.html",
       onEnter: function(){
       }
@@ -63,7 +63,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('usersShow', {
-      url: "/users/:userid",
+      url: "/users/:userId",
       templateUrl: "../views/users/show.html",
       onEnter: function(){
       }
@@ -75,7 +75,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       }
     })
     .state('usersEdit', {
-      url: "/users/:userid/edit",
+      url: "/users/:userId/edit",
       templateUrl: "../views/users/edit.html",
       onEnter: function(){
       }

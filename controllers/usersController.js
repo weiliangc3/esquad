@@ -24,7 +24,7 @@ function usersUpdate(req, res){
     if (err) return res.status(500).json({message: "Something went wrong!"});
     if (!user) return res.status(404).json({message: 'No user found.'});
 
-    if (req.body.email) user.local.email = req.body.name;
+    if (req.body.fullname) user.local.fullname = req.body.fullname;
     if (req.body.password) user.local.password = req.body.password;
 
     user.save(function(err) {
@@ -42,9 +42,25 @@ function usersDelete(req, res){
   });
 }
 
+function usersAddSquad(req, res){
+  User.findById(req.params.id,  function(err, user) {
+    if (err) return res.status(500).json({message: "Something went wrong!"});
+    if (!user) return res.status(404).json({message: 'No user found.'});
+
+    user.squads.push(req.body.squad);
+    user.save(function(err){
+      if (err) return res.status(500).json({message: "Something went wrong updating the user!"});
+
+      res.status(201).json({message: 'Squad added', user: user});
+    });
+  });
+
+}
+
 module.exports = {
-  usersIndex:  usersIndex,
-  usersShow:   usersShow,
-  usersUpdate: usersUpdate,
-  usersDelete: usersDelete
+  usersIndex:     usersIndex,
+  usersShow:      usersShow,
+  usersUpdate:    usersUpdate,
+  usersDelete:    usersDelete,
+  usersAddSquad:  usersAddSquad
 };

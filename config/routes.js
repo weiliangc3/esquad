@@ -11,7 +11,6 @@ router.post('/register', authenticationsController.register);
 
 router.route('/users')
 .get(usersController.usersIndex);
-
 router.route('/users/:id')
 .get(usersController.usersShow)
 .put(usersController.usersUpdate)
@@ -20,7 +19,6 @@ router.route('/users/:id')
 router.route('/squads')
 .get(squadsController.squadsIndex)
 .post(squadsController.squadsCreate);
-
 router.route('/squads/:id')
 .get(squadsController.squadsShow)
 .put(squadsController.squadsUpdate)
@@ -29,10 +27,13 @@ router.route('/squads/:id')
 router.route('/jobs')
 .get(jobsController.jobsIndex)
 .post(jobsController.jobsCreate);
-
 router.route('/jobs/:id')
 .get(jobsController.jobsShow)
 .put(jobsController.jobsUpdate)
 .delete(jobsController.jobsDelete);
+
+// Custom routes
+router.route('/users/addSquad')
+.post(usersController.usersAddSquad);
 
 module.exports = router;
