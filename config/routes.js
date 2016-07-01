@@ -3,7 +3,7 @@ var router  = express.Router();
 
 var usersController           = require('../controllers/usersController');
 var authenticationsController = require('../controllers/authenticationsController');
-var teamsController           = require('../controllers/teamsController');
+var squadsController           = require('../controllers/squadsController');
 var jobsController           = require('../controllers/jobsController');
 
 router.post('/login', authenticationsController.login);
@@ -17,14 +17,14 @@ router.route('/users/:id')
 .put(usersController.usersUpdate)
 .delete(usersController.usersDelete);
 
-router.route('/teams')
-.get(teamsController.teamsIndex)
-.post(teamsController.teamsCreate);
+router.route('/squads')
+.get(squadsController.squadsIndex)
+.post(squadsController.squadsCreate);
 
-router.route('/teams/:id')
-.get(teamsController.teamsShow)
-.put(teamsController.teamsUpdate)
-.delete(teamsController.teamsDelete);
+router.route('/squads/:id')
+.get(squadsController.squadsShow)
+.put(squadsController.squadsUpdate)
+.delete(squadsController.squadsDelete);
 
 router.route('/jobs')
 .get(jobsController.jobsIndex)

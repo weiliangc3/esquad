@@ -8,9 +8,9 @@ var userSchema = mongoose.Schema({
     email:    { type: String, unique: true, required: true },
     password: { type: String, required: true }
   },
-  teams:          [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
-  teamsApplied:   [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
-  teamsInvited:   [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
+  squads:          [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
+  squadsApplied:   [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
+  squadsInvited:   [{ type: mongoose.Schema.ObjectId, ref: 'Team' }],
   backup:         [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   skills:         [String],
   reviews:        [review],

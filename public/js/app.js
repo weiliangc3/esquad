@@ -55291,7 +55291,7 @@ angular
 .module('eSquad', ['ngResource', 'angular-jwt','ui.router','ngFileUpload'])
 .constant('API', 'http://localhost:3000/api')
 // .constant('API', 'https://thisisesquad.herokuapp.com/api')
-.constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
+// .constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
 .config(MainRouter)
 .config(function($httpProvider){
   $httpProvider.interceptors.push("authInterceptor");
@@ -55327,27 +55327,45 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
       onEnter: function(){
       }
     })
-    .state('teams.show', {
-      url: "/teams/:teamid",
-      templateUrl: "../views/teams/show.html",
+    .state('squadsShow', {
+      url: "/squads/:squadid",
+      templateUrl: "../views/squads/show.html",
       onEnter: function(){
       }
     })
-    .state('teams.index', {
-      url: "/teams",
-      templateUrl: "../views/teams/index.html",
+    .state('squadsIndex', {
+      url: "/squads",
+      templateUrl: "../views/squads/index.html",
       onEnter: function(){
       }
     })
-    .state('teams.edit', {
-      url: "/teams/:teamid/edit",
-      templateUrl: "../views/teams/edit.html",
+    .state('squadsEdit', {
+      url: "/squads/:squadid/edit",
+      templateUrl: "../views/squads/edit.html",
       onEnter: function(){
       }
     })
-    .state('teams.new', {
-      url: "/teams/new",
-      templateUrl: "../views/teams/new.html",
+    .state('squadsNew', {
+      url: "/squads/new",
+      templateUrl: "../views/squads/new.html",
+      onEnter: function(){
+      }
+    })
+    .state('usersShow', {
+      url: "/users/:userid",
+      templateUrl: "../views/users/show.html",
+      onEnter: function(){
+      }
+    })
+    .state('usersIndex', {
+      url: "/users",
+      templateUrl: "../views/users/index.html",
+      onEnter: function(){
+      }
+    })
+    .state('usersEdit', {
+      url: "/users/:userid/edit",
+      templateUrl: "../views/users/edit.html",
       onEnter: function(){
       }
     });
@@ -55382,7 +55400,6 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
-  self.userType      = null;
 
   if ($stateParams.userId){
     self.user = User.get({ id: $stateParams.userId }, function(res){
@@ -55401,8 +55418,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     if (token){
       self.currentUser = CurrentUser.getUser();
       self.getUsers();
-      self.userType = self.currentUser.userType;
-      if (self.userType === "squaddie"){
+      if (self.currentUser.userType === "squaddie"){
         $state.go("dashboard");
       } else{
         $state.go("home");
@@ -55441,7 +55457,6 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   }
 
   return self;
-
 }
 
 angular

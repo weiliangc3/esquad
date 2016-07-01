@@ -16,7 +16,6 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
-  self.userType      = null;
 
   if ($stateParams.userId){
     self.user = User.get({ id: $stateParams.userId }, function(res){
@@ -35,8 +34,7 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     if (token){
       self.currentUser = CurrentUser.getUser();
       self.getUsers();
-      self.userType = self.currentUser.userType;
-      if (self.userType === "squaddie"){
+      if (self.currentUser.userType === "squaddie"){
         $state.go("dashboard");
       } else{
         $state.go("home");
@@ -75,5 +73,4 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   }
 
   return self;
-
 }
