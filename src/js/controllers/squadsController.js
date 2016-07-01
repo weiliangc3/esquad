@@ -35,12 +35,17 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
 
   // Functions
   function createSquad(){
-    self.squad.specialties = [];
-    self.squad.specialties.push(self.newSquad.specialty1);    self.squad.specialties.push(self.newSquad.specialty2);    self.squad.specialties.push(self.newSquad.specialty3);
+    self.squad.specialties  = [];
+    if (!!self.newSquad.specialty1) self.squad.specialties.push(self.newSquad.specialty1);
+    if (!!self.newSquad.specialty2) self.squad.specialties.push(self.newSquad.specialty2);
+    if (!!self.newSquad.specialty3) self.squad.specialties.push(self.newSquad.specialty3);
+    self.squad.leaders      = [];
+    self.squad.leaders.push($scope.$parent.Users.currentUser);
+    self.squad.members      = [];
+    self.squad.members.push($scope.$parent.Users.currentUser);
     var currentUserId = $scope.$parent.Users.currentUser._id;
-    Squad.save({ squad: self.squad
-    },
-    function(data){
+    Squad.save({ squad: self.squad }, function(data){
+      console.log(data);
       User.addSquad({
         id: currentUserId,
         squad: data.squad
@@ -55,5 +60,11 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     });
   }
 
+
+  // Tester function
+  self.testFunction = function(){
+    console.log("Squad Test:");
+    console.log(this.squad);
+  };
 
 }

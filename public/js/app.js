@@ -55289,8 +55289,8 @@ ngFileUpload.service('UploadExif', ['UploadResize', '$q', function (UploadResize
 
 angular
 .module('eSquad', ['ngResource', 'angular-jwt','ui.router','ngFileUpload'])
-// .constant('API', 'http://localhost:3000/api')
-.constant('API', 'https://thisisesquad.herokuapp.com/api')
+.constant('API', 'http://localhost:3000/api')
+// .constant('API', 'https://thisisesquad.herokuapp.com/api')
 .constant('AWS_URL', "https://s3-eu-west-1.amazonaws.com/wdi19-weidings/")
 .config(MainRouter)
 .config(function($httpProvider){
@@ -55425,12 +55425,17 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
 
   // Functions
   function createSquad(){
-    self.squad.specialties = [];
-    self.squad.specialties.push(self.newSquad.specialty1);    self.squad.specialties.push(self.newSquad.specialty2);    self.squad.specialties.push(self.newSquad.specialty3);
+    self.squad.specialties  = [];
+    if (!!self.newSquad.specialty1) self.squad.specialties.push(self.newSquad.specialty1);
+    if (!!self.newSquad.specialty2) self.squad.specialties.push(self.newSquad.specialty2);
+    if (!!self.newSquad.specialty3) self.squad.specialties.push(self.newSquad.specialty3);
+    self.squad.leaders      = [];
+    self.squad.leaders.push($scope.$parent.Users.currentUser);
+    self.squad.members      = [];
+    self.squad.members.push($scope.$parent.Users.currentUser);
     var currentUserId = $scope.$parent.Users.currentUser._id;
-    Squad.save({ squad: self.squad
-    },
-    function(data){
+    Squad.save({ squad: self.squad }, function(data){
+      console.log(data);
       User.addSquad({
         id: currentUserId,
         squad: data.squad
@@ -55445,6 +55450,12 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     });
   }
 
+
+  // Tester function
+  self.testFunction = function(){
+    console.log("Squad Test:");
+    console.log(this.squad);
+  };
 
 }
 
@@ -55522,6 +55533,13 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   if (checkLoggedIn()) {
     self.getUsers();
   }
+
+
+  // Tester function
+  self.testFunction = function(){
+    console.log(" User Test:");
+    console.log(this.currentUser);
+  };
 
   return self;
 }

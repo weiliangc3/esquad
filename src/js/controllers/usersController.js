@@ -73,5 +73,12 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     self.getUsers();
   }
 
+
+  // Tester function
+  self.testFunction = function(){
+    console.log(" User Test:");
+    console.log(this.currentUser);
+  };
+
   return self;
 }
