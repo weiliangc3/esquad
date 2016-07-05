@@ -23,10 +23,12 @@
 
 // Universal CSS
 main {
-  padding-top: 50px;
-  div.jumbotron.home{
-    background: url("/images/team1.jpg");
-    background-size: cover;
+  .btn-default{
+    background-color: black;
+    transition: 0.5s ease all;
+  }
+  .btn-default:hover{
+    background-color: red
   }
 }
 // Helper CSS
@@ -41,7 +43,6 @@ div.div-button:hover{
   background: red;
   color: yellow;
 }
-
 
 
 // Navbar

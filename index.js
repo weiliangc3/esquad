@@ -61,7 +61,7 @@ app.use("/api", routes);
 
 // Front end stuff
 app.use("/", express.static(__dirname + "/public"));
-app.use("/", express.static(__dirname + "/bower_components"));
+app.use("/", express.static(__dirname + "/vendor"));
 
 // Multer for File Uploads - currently set to Amazon S3 bucket and disabled
 // var upload = multer({

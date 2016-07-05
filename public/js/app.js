@@ -55306,6 +55306,9 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
     .state('home', {
       url: "/",
       templateUrl: "../views/statics/home.html",
+      resolve: {
+        showCarousal: function() {return true;}
+      },
       onEnter: function(){
       }
     })
@@ -55324,6 +55327,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
     .state('dashboard', {
       url: "/dashboard",
       templateUrl: "../views/dashboard.html",
+      controller: "UsersController as User",
       onEnter: function(){
       }
     })
@@ -55396,8 +55400,10 @@ SquadsController.$inject = ['User', 'Squad', '$state', '$stateParams', '$scope',
 function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API, AWS_URL){
   var self = this;
 
-  self.createSquad   = createSquad;
-  self.deleteSquad   = deleteSquad;
+  self.createSquad        = createSquad;
+  self.deleteSquad        = deleteSquad;
+  self.applyToSquad       = applyToSquad;
+  self.retractApplication = retractApplication;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -55427,7 +55433,7 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       // Check user's relationship to squad
       for (i=0; i < self.squad.appliedMembers.length; i++){
         if (self.squad.appliedMembers[i]._id === $scope.$parent.Users.currentUser._id) {
-          self.isInvited      = true;
+          self.isApplied      = true;
         }
       }
       for (i=0; i < self.squad.invitedMembers.length; i++){
@@ -55478,6 +55484,27 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     });
   }
 
+  // Application Functions
+  function applyToSquad(){
+    self.squad.appliedMembers.push($scope.$parent.Users.currentUser);
+    Squad.update( {id: self.squad._id}, self.squad, function(data){
+      self.isApplied = true;
+    });
+  }
+  function retractApplication(){
+    var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf($scope.$parent.Users.currentUser._id);
+    self.squad.appliedMembers.splice(userPos, 1);
+    Squad.update( {id: self.squad._id}, self.squad, function(data){
+      self.isApplied = false;
+    });
+  }
+  function acceptApplication(user){
+    var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf(user._id);
+    self.squad.members.push(id);
+    self.squad.appliedMembers.splice(userPos, 1);
+
+  }
+
   // Tester function
   self.testFunction = function(){
     console.log("Squad Test:");
@@ -55490,8 +55517,8 @@ angular
 .module('eSquad')
 .controller('UsersController', UsersController);
 
-UsersController.$inject = ['User','CurrentUser', '$state', '$stateParams'];
-function UsersController(User, CurrentUser, $state, $stateParams){
+UsersController.$inject = ['User','CurrentUser', '$state', '$stateParams', '$scope'];
+function UsersController(User, CurrentUser, $state, $stateParams, $scope){
 
   var self = this;
 
@@ -55505,6 +55532,8 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
+  self.showCarousal  = false;
+
 
   if ($stateParams.userId){
     self.user = User.get({ id: $stateParams.userId }, function(res){
@@ -55567,6 +55596,14 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     console.log(" User Test:");
     console.log(this);
   };
+
+
+  // Dashboard conditionals
+  if ($state.current.name === 'dashboard'){
+    self.user = User.get({ id: self.currentUser._id }, function(res){
+      self.user = res.user;
+    });
+  }
 
   return self;
 }

@@ -17,6 +17,9 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
     .state('home', {
       url: "/",
       templateUrl: "../views/statics/home.html",
+      resolve: {
+        showCarousal: function() {return true;}
+      },
       onEnter: function(){
       }
     })
@@ -35,6 +38,7 @@ function MainRouter($stateProvider, $urlRouterProvider, $locationProvider){
     .state('dashboard', {
       url: "/dashboard",
       templateUrl: "../views/dashboard.html",
+      controller: "UsersController as User",
       onEnter: function(){
       }
     })

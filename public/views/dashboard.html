@@ -3,7 +3,7 @@
 <h3>My Squads</h3>
 <div class="container dashboard-squads">
 
-  <div ng-repeat="squad in Users.currentUser.squads" class="div-button" ui-sref="squadsShow({squadId: squad._id})">
+  <div ng-repeat="squad in User.user.squads" class="div-button" ui-sref="squadsShow({squadId: squad._id})">
     <h4>{{squad.name}}</h4>
     <button class="btn btn-default" ng-click="Squads.deleteSquad(squad._id)">Delete (test button)</button>
   </div>

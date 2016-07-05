@@ -7,61 +7,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <!-- Bootstrap CSS -->
+  <!-- Vendor css -->
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link href="/vendor/css/nivo-lightbox.css" rel="stylesheet" />
+  <link href="/vendor/css/nivo-lightbox-theme/default/default.css" rel="stylesheet" type="text/css" />
+  <link href="/vendor/css/owl.carousel.css" rel="stylesheet" media="screen" />
+  <link href="/vendor/css/owl.theme.css" rel="stylesheet" media="screen" />
+  <link href="/vendor/css/flexslider.css" rel="stylesheet" />
+  <link href="/vendor/css/animate.css" rel="stylesheet" />
+  <link href="/vendor/css/style.css" rel="stylesheet">
+  <link href="/vendor/color/default.css" rel="stylesheet">
+
+  <!-- Grunted -->
   <link rel="stylesheet" href="/css/app.css" media="screen" title="no title" charset="utf-8">
   <script src="/js/app.js" charset="utf-8"></script>
+
   <base href="/">
 </head>
-<body ng-controller="UsersController as Users">
-
-  <header>
-    <nav class="navbar navbar-fixed-top navbar-light bg-faded">
-      <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#primary-nav-bar">
-        &#9776;
-      </button>
-      <div class="collapse navbar-toggleable-xs" id="primary-nav-bar">
-        <a class="navbar-brand" href="/" ui-sref="home" ng-hide="Users.checkLoggedIn()">eSquad</a>
-        <a class="navbar-brand" href="/dashboard" ui-sref="dashboard" ng-show="Users.checkLoggedIn()">eSquad</a>
-        <ul class="nav navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="/" ui-sref="home" ng-hide="Users.checkLoggedIn()">Home<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/dashboard" ui-sref="dashboard" ng-show="Users.currentUser.userType==='squaddie'">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/users" ui-sref="usersIndex" ng-show="Users.currentUser.userType==='squaddie'">Users</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/squads" ui-sref="squadsIndex" ng-show="Users.currentUser.userType==='squaddie'">Squads</a>
-          </li>
-
-          <li class="nav-item pull-xs-right">
-            <a class="nav-link" href="/login" ng-hide="Users.checkLoggedIn()">Login</a>
-          </li>
-          <li class="nav-item pull-xs-right">
-            <a class="nav-link" href="/login" ui-sref="register" ng-hide="Users.checkLoggedIn()">Register</a>
-          </li>
-          <li class="nav-item pull-xs-right">
-            <a class="nav-link" href="/" ng-click="Users.logout()" ng-show="Users.checkLoggedIn()">Logout</a>
-          </li>
-          <li class="nav-item pull-xs-right">
-            <a class="nav-link" href="/users/{{Users.currentUser._id}}" ui-sref="usersShow({ userId: Users.currentUser._id })" ng-show="Users.checkLoggedIn()">{{Users.currentUser.local.fullname}}</a>
-          </li>
-
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  <main ui-view>
-    <div class="jumbotron jumbotron-fluid">
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom"  ng-controller="UsersController as Users">
+  <!-- Navigation -->
+  <div id="navigation">
+    <nav class="navbar navbar-custom" role="navigation">
       <div class="container">
-        <h1 class="display-3">eSquad</h1>
-        <p class="lead">Welcome to eSquad. Give us a second to find your page! In the mean time- smile!</p>
+        <div class="row">
+          <div class="col-md-2">
+            <div class="site-logo">
+              <a href="index.html" class="brand">Shuffle</a>
+            </div>
+          </div>
+
+
+          <div class="col-md-10">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                <i class="fa fa-bars"></i>
+              </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="menu">
+              <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="#intro" ui-sref="home">Home</a></li>
+                <li><a href="#about" ng-hide="Users.checkLoggedIn()">About Us</a></li>
+                <li><a href="#service" ng-hide="Users.checkLoggedIn()">Services</a></li>
+                <li><a href="#works" ng-hide="Users.checkLoggedIn()">Works</a></li>
+                <li><a href="#contact" ng-hide="Users.checkLoggedIn()">Contact</a></li>
+
+                <li>
+                  <a href="/dashboard" ui-sref="dashboard" ng-show="Users.currentUser.userType==='squaddie'">Dashboard</a>
+                </li>
+                <li>
+                  <a href="/users" ui-sref="usersIndex" ng-show="Users.currentUser.userType==='squaddie'">Users</a>
+                </li>
+                <li>
+                  <a href="/squads" ui-sref="squadsIndex" ng-show="Users.currentUser.userType==='squaddie'">Squads</a>
+                </li>
+
+                <li>
+                  <a href="/login" ng-hide="Users.checkLoggedIn()">Login</a>
+                </li>
+                <li>
+                  <a href="/login" ui-sref="register" ng-hide="Users.checkLoggedIn()">Register</a>
+                </li>
+                <li>
+                  <a href="/users/{{Users.currentUser._id}}" ui-sref="usersShow({ userId: Users.currentUser._id })" ng-show="Users.checkLoggedIn()">{{Users.currentUser.local.fullname}}</a>
+                </li>
+                <li>
+                  <a href="/" ng-click="Users.logout()" ng-show="Users.checkLoggedIn()">Logout</a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.Navbar-collapse -->
+
+          </div>
+        </div>
       </div>
-    </div>
+      <!-- /.container -->
+    </nav>
+  </div>
+  <!-- /Navigation -->
+  <main ui-view>
+
   </main>
+
+
+  <!-- Core JavaScript Files -->
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/jquery.sticky.js"></script>
+  <script src="/vendor/js/jquery.flexslider-min.js"></script>
+  <script src="/vendor/js/jquery.easing.min.js"></script>
+  <script src="/vendor/js/jquery.scrollTo.js"></script>
+  <script src="/vendor/js/jquery.appear.js"></script>
+  <script src="/vendor/js/stellar.js"></script>
+  <script src="/vendor/js/wow.min.js"></script>
+  <script src="/vendor/js/owl.carousel.min.js"></script>
+  <script src="/vendor/js/nivo-lightbox.min.js"></script>
+
+  <script src="/vendor/js/custom.js"></script>
 
 </body>
 </html>

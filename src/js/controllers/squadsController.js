@@ -6,8 +6,10 @@ SquadsController.$inject = ['User', 'Squad', '$state', '$stateParams', '$scope',
 function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API, AWS_URL){
   var self = this;
 
-  self.createSquad   = createSquad;
-  self.deleteSquad   = deleteSquad;
+  self.createSquad        = createSquad;
+  self.deleteSquad        = deleteSquad;
+  self.applyToSquad       = applyToSquad;
+  self.retractApplication = retractApplication;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -37,7 +39,7 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       // Check user's relationship to squad
       for (i=0; i < self.squad.appliedMembers.length; i++){
         if (self.squad.appliedMembers[i]._id === $scope.$parent.Users.currentUser._id) {
-          self.isInvited      = true;
+          self.isApplied      = true;
         }
       }
       for (i=0; i < self.squad.invitedMembers.length; i++){
@@ -86,6 +88,32 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     Squad.delete({id: id}, function(){
       $state.go("dashboard");
     });
+  }
+
+  // Application Functions
+  function applyToSquad(){
+    self.squad.appliedMembers.push($scope.$parent.Users.currentUser);
+    Squad.update( {id: self.squad._id}, self.squad, function(data){
+      self.isApplied = true;
+    });
+  }
+  function retractApplication(){
+    var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf($scope.$parent.Users.currentUser._id);
+    self.squad.appliedMembers.splice(userPos, 1);
+    Squad.update( {id: self.squad._id}, self.squad, function(data){
+      self.isApplied = false;
+    });
+  }
+  function acceptApplication(user){
+    if (self.isLeader){
+      self.squad.members.push(user);
+      var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf(user._id);
+      self.squad.appliedMembers.splice(userPos, 1);
+      self.squad.
+    } else {
+      console.log("Unauthorised application acceptance");
+    }
+
   }
 
   // Tester function

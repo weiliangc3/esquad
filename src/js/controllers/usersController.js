@@ -2,8 +2,8 @@ angular
 .module('eSquad')
 .controller('UsersController', UsersController);
 
-UsersController.$inject = ['User','CurrentUser', '$state', '$stateParams'];
-function UsersController(User, CurrentUser, $state, $stateParams){
+UsersController.$inject = ['User','CurrentUser', '$state', '$stateParams', '$scope'];
+function UsersController(User, CurrentUser, $state, $stateParams, $scope){
 
   var self = this;
 
@@ -17,6 +17,8 @@ function UsersController(User, CurrentUser, $state, $stateParams){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
+  self.showCarousal  = false;
+
 
   if ($stateParams.userId){
     self.user = User.get({ id: $stateParams.userId }, function(res){
@@ -79,6 +81,14 @@ function UsersController(User, CurrentUser, $state, $stateParams){
     console.log(" User Test:");
     console.log(this);
   };
+
+
+  // Dashboard conditionals
+  if ($state.current.name === 'dashboard'){
+    self.user = User.get({ id: self.currentUser._id }, function(res){
+      self.user = res.user;
+    });
+  }
 
   return self;
 }

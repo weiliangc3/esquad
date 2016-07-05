@@ -1,18 +1,55 @@
 <h2>{{Squads.squad.name}}</h2>
-  <p>
-    Squad Show
-  </p>
 
-  <p>
-    Description:
-    {{Squads.squad.description}}
-  </p>
+<p>
+  {{Squads.squad.description}}
+</p>
 
-  <div class="btn btn-default" ng-click="Squads.testFunction()">
-    TESTER
+<p ng-if="Squads.isMember">
+  You are a member of this squad.
+</p>
+<p ng-if="Squads.isApplied">
+  You have applied to this squad and are awaiting confirmation.
+</p>
+<p ng-if="Squads.isInvited">
+  You have been invited to this squad.
+</p>
+
+
+<div class="container">
+  <h3>Info</h3>
+  <h4>Leader<span ng-if="Squads.squad.leaders.length > 1">s</span>:</h4>
+    <ul ng-repeat="leader in Squads.squad.leaders">
+      <li>{{leader.local.fullname}}</li>
+    </ul>
+  <h4>Squaddies</h4>
+    <div class="card card-block" ng-repeat="member in Squads.squad.members">
+      <h5 class="card-title">{{member.local.fullname}}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
+    </div>
+</div>
+
+<div class="container" ng-if="Squads.isLeader">
+  <h3>Leader Panel</h3>
+  <div class="container">
+    <h4>Applicants</h4>
+    <div class="card card-block" ng-repeat="applicant in Squads.squad.appliedMembers">
+      <h5 class="card-title">{{applicant.local.fullname}}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
+    </div>
   </div>
+</div>
 
-  <button type="button" name="button" class="btn btn-default" ng-if="!Squads.isMember && !Squads.isApplied && !Squad.isInvited">Apply to join this.</button>
+
+<button class="btn btn-default" ng-click="Squads.testFunction()">
+  TESTER
+</button>
+
+<button type="button" name="button" class="btn btn-default" ng-if="!Squads.isMember && !Squads.isApplied && !Squad.isInvited" ng-click="Squads.applyToSquad()">Apply to join this squad</button>
+<button type="button" name="button" class="btn btn-default" ng-if="!Squads.isMember && Squads.isApplied && !Squad.isInvited" ng-click="Squads.retractApplication()">Make this: Retract application</button>
 
 
-  <button class="btn btn-default" ng-click="Squads.deleteSquad(Squads.squad._id)">Delete Squad</button>
+<button class="btn btn-default" ng-click="Squads.deleteSquad(Squads.squad._id)">Delete Squad</button>

@@ -6220,13 +6220,13 @@ a.bg-danger:focus, a.bg-danger:hover {
   transform: translate(-50%, -50%);
 }
 
-main {
-  padding-top: 50px;
+main .btn-default {
+  background-color: black;
+  transition: 0.5s ease all;
 }
 
-main div.jumbotron.home {
-  background: url("/images/team1.jpg");
-  background-size: cover;
+main .btn-default:hover {
+  background-color: red;
 }
 
 div.div-button {
