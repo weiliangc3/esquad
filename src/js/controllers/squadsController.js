@@ -10,6 +10,7 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   self.deleteSquad        = deleteSquad;
   self.applyToSquad       = applyToSquad;
   self.retractApplication = retractApplication;
+  self.acceptApplication  = acceptApplication;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -95,13 +96,20 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     self.squad.appliedMembers.push($scope.$parent.Users.currentUser);
     Squad.update( {id: self.squad._id}, self.squad, function(data){
       self.isApplied = true;
+      $scope.$parent.Users.currentUser.squadsApplied.push(self.squad);
+      User.update({id: $scope.$parent.Users.currentUser._id}, $scope.$parent.Users.currentUser, function(data){});
     });
+
+
   }
   function retractApplication(){
     var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf($scope.$parent.Users.currentUser._id);
     self.squad.appliedMembers.splice(userPos, 1);
     Squad.update( {id: self.squad._id}, self.squad, function(data){
       self.isApplied = false;
+      var squadPos = $scope.$parent.Users.currentUser.squadsApplied.map(function(x){return x._id;}).indexOf(self.squad._id);
+      $scope.$parent.Users.currentUser.squadsApplied.splice(squadPos, 1);
+      User.update({id: $scope.$parent.Users.currentUser._id}, $scope.$parent.Users.currentUser, function(data){});
     });
   }
   function acceptApplication(user){
@@ -109,7 +117,13 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       self.squad.members.push(user);
       var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf(user._id);
       self.squad.appliedMembers.splice(userPos, 1);
-      self.squad.
+      Squad.update( {id: self.squad._id}, self.squad, function(data){
+        var selectedUser = user;
+        selectedUser.squads.push(self.squad);
+        var squadPos = selectedUser.squadsApplied.map(function(x){return x._id;}).indexOf(selectedUser.id);
+        selectedUser.squadsApplied.splice(squadPos, 1);
+        User.update({id: user._id}, selectedUser, function(data){});
+      });
     } else {
       console.log("Unauthorised application acceptance");
     }
@@ -120,6 +134,10 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   self.testFunction = function(){
     console.log("Squad Test:");
     console.log(this);
+
+
+    $scope.$parent.Users.currentUser.squadsApplied.push(self.squad);
+    console.log($scope.$parent.Users.currentUser);
   };
 
 }

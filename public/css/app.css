@@ -6272,3 +6272,14 @@ main div.row.register-choice div.choice p.align-both {
 main div.row.register-choice div.choice:hover {
   background-color: #4F7A93;
 }
+
+main div.squadinfo div.card.squaddie {
+  transition: 0.3s ease all;
+  cursor: pointer;
+}
+
+main div.squadinfo div.card.squaddie:hover {
+  background-color: #FAFEFE;
+  transform: translate(1px, -1px);
+  box-shadow: 1px 1px #DBF7FB;
+}
