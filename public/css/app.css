@@ -6283,3 +6283,7 @@ main div.squadinfo div.card.squaddie:hover {
   transform: translate(1px, -1px);
   box-shadow: 1px 1px #DBF7FB;
 }
+
+main div.leaderpanel {
+  background-color: #CEE7C4;
+}

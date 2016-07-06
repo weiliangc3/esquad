@@ -8,13 +8,13 @@ var userSchema = mongoose.Schema({
     email:    { type: String, unique: true, required: true },
     password: { type: String, required: true }
   },
-  squads:          [{ type: mongoose.Schema.ObjectId, ref: 'Squad' }],
-  squadsApplied:   [{ type: mongoose.Schema.ObjectId, ref: 'Squad' }],
-  squadsInvited:   [{ type: mongoose.Schema.ObjectId, ref: 'Squad' }],
-  backup:         [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  skills:         [String],
-  reviews:        [review],
-  userType:       String
+  squads:           [{ type: mongoose.Schema.ObjectId, ref: 'Squad' }],
+  squadsApplied:    [{ type: mongoose.Schema.ObjectId, ref: 'Squad' }],
+  squadsInvited:    [{ type: mongoose.Schema.ObjectId, ref: 'Squad' }],
+  backup:           [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  skills:           [String],
+  reviews:          [review],
+  userType:         String
 }, {
   timestamps: true
 });

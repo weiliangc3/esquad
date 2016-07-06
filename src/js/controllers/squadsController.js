@@ -11,6 +11,7 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   self.applyToSquad       = applyToSquad;
   self.retractApplication = retractApplication;
   self.acceptApplication  = acceptApplication;
+  self.toggleAvailability = toggleAvailability;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -99,8 +100,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       $scope.$parent.Users.currentUser.squadsApplied.push(self.squad);
       User.update({id: $scope.$parent.Users.currentUser._id}, $scope.$parent.Users.currentUser, function(data){});
     });
-
-
   }
   function retractApplication(){
     var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf($scope.$parent.Users.currentUser._id);
@@ -127,17 +126,22 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     } else {
       console.log("Unauthorised application acceptance");
     }
+  }
 
+  function toggleAvailability(){
+    if (this.squad.available !== true){
+      this.squad.available = true;
+    } else {
+      this.squad.available = false;
+    }
+    Squad.update( {id: self.squad._id}, self.squad, function(data){
+    });
   }
 
   // Tester function
   self.testFunction = function(){
     console.log("Squad Test:");
     console.log(this);
-
-
-    $scope.$parent.Users.currentUser.squadsApplied.push(self.squad);
-    console.log($scope.$parent.Users.currentUser);
   };
 
 }

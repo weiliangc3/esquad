@@ -11,6 +11,7 @@ var squadSchema = mongoose.Schema({
   invitedMembers:     [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   appliedMembers:     [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   reviews:            [review],
+  available:          Boolean,
 }, {
   timestamps: true
 });

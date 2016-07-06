@@ -18,11 +18,26 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
   self.showCarousal  = false;
+  self.currentUserLeaderOf = [];
 
+  if (checkLoggedIn()) {
+    self.getUsers();
+  }
 
   if ($stateParams.userId){
-    self.user = User.get({ id: $stateParams.userId }, function(res){
+    User.get({ id: $stateParams.userId }, function(res){
       self.user = res.user;
+    });
+    User.get({ id: self.currentUser._id}, function(res){
+      var currentUser = res.user;
+      for (i=0;i<currentUser.squads.length;i++){
+        for (j=0;j<currentUser.squads[i].leaders.length;j++){
+          if (currentUser.squads[i].leaders[j] === currentUser._id){
+            self.currentUserLeaderOf.push(currentUser.squads[i]);
+          }
+        }
+      }
+      console.log("current user leader of (use USER in showpage for list)",  self.currentUserLeaderOf);
     });
   }
 
@@ -71,11 +86,6 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
     return !!self.currentUser;
   }
 
-  if (checkLoggedIn()) {
-    self.getUsers();
-  }
-
-
   // Tester function
   self.testFunction = function(){
     console.log(" User Test:");
@@ -83,7 +93,7 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   };
 
 
-  // Dashboard conditionals
+  // Dashboard conditionals - shouldn't be in usersController- move to another service eventually
   if ($state.current.name === 'dashboard'){
     self.user = User.get({ id: self.currentUser._id }, function(res){
       self.user = res.user;

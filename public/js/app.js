@@ -55405,6 +55405,7 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   self.applyToSquad       = applyToSquad;
   self.retractApplication = retractApplication;
   self.acceptApplication  = acceptApplication;
+  self.toggleAvailability = toggleAvailability;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -55493,8 +55494,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       $scope.$parent.Users.currentUser.squadsApplied.push(self.squad);
       User.update({id: $scope.$parent.Users.currentUser._id}, $scope.$parent.Users.currentUser, function(data){});
     });
-
-
   }
   function retractApplication(){
     var userPos = self.squad.appliedMembers.map(function(x){return x._id;}).indexOf($scope.$parent.Users.currentUser._id);
@@ -55521,17 +55520,22 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     } else {
       console.log("Unauthorised application acceptance");
     }
+  }
 
+  function toggleAvailability(){
+    if (this.squad.available !== true){
+      this.squad.available = true;
+    } else {
+      this.squad.available = false;
+    }
+    Squad.update( {id: self.squad._id}, self.squad, function(data){
+    });
   }
 
   // Tester function
   self.testFunction = function(){
     console.log("Squad Test:");
     console.log(this);
-
-
-    $scope.$parent.Users.currentUser.squadsApplied.push(self.squad);
-    console.log($scope.$parent.Users.currentUser);
   };
 
 }
@@ -55556,11 +55560,26 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
   self.showCarousal  = false;
+  self.currentUserLeaderOf = [];
 
+  if (checkLoggedIn()) {
+    self.getUsers();
+  }
 
   if ($stateParams.userId){
-    self.user = User.get({ id: $stateParams.userId }, function(res){
+    User.get({ id: $stateParams.userId }, function(res){
       self.user = res.user;
+    });
+    User.get({ id: self.currentUser._id}, function(res){
+      var currentUser = res.user;
+      for (i=0;i<currentUser.squads.length;i++){
+        for (j=0;j<currentUser.squads[i].leaders.length;j++){
+          if (currentUser.squads[i].leaders[j] === currentUser._id){
+            self.currentUserLeaderOf.push(currentUser.squads[i]);
+          }
+        }
+      }
+      console.log("current user leader of (use USER in showpage for list)",  self.currentUserLeaderOf);
     });
   }
 
@@ -55609,11 +55628,6 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
     return !!self.currentUser;
   }
 
-  if (checkLoggedIn()) {
-    self.getUsers();
-  }
-
-
   // Tester function
   self.testFunction = function(){
     console.log(" User Test:");
@@ -55621,7 +55635,7 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   };
 
 
-  // Dashboard conditionals
+  // Dashboard conditionals - shouldn't be in usersController- move to another service eventually
   if ($state.current.name === 'dashboard'){
     self.user = User.get({ id: self.currentUser._id }, function(res){
       self.user = res.user;
