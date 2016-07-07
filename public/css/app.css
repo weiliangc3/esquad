@@ -6275,7 +6275,6 @@ main div.row.register-choice div.choice:hover {
 
 main div.squadinfo div.card.squaddie {
   transition: 0.3s ease all;
-  cursor: pointer;
 }
 
 main div.squadinfo div.card.squaddie:hover {

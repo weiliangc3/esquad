@@ -33,7 +33,7 @@ router.route('/jobs/:id')
 .delete(jobsController.jobsDelete);
 
 // Custom routes
-router.route('/users/addSquad')
-.post(usersController.usersAddSquad);
+router.route('/users/updateSquads')
+.post(usersController.usersUpdateSquads);
 
 module.exports = router;

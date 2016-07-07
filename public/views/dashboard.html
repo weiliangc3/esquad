@@ -5,7 +5,6 @@
 
   <div ng-repeat="squad in User.user.squads" class="div-button" ui-sref="squadsShow({squadId: squad._id})">
     <h4>{{squad.name}}</h4>
-    <button class="btn btn-default" ng-click="Squads.deleteSquad(squad._id)">Delete (test button)</button>
   </div>
   <div class="btn btn-default" ng-click="Users.testFunction()">
     TESTER
@@ -26,3 +25,11 @@
 <h3>Jobs</h3>
 
 <h3>Messages</h3>
+<div class="container">
+  Invites
+  <div ng-repeat="squad in User.user.squadsInvited" class="div-button">
+    <h4>{{squad.name}}</h4>
+    <button class="btn btn-default" ui-sref="squadsShow({squadId: squad._id})" type="button" name="button">Find out more about this squad</button>
+    <button class="btn btn-default" ng-click="Squads.acceptInvite(squad._id)">Accept Invitation</button>
+  </div>
+</div>

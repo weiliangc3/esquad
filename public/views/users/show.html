@@ -1,8 +1,17 @@
 <h1>{{User.user.local.fullname}}</h1>
 
 <div class="container" ng-if="!!User.userCanBeInvited.length">
-  Invite this person to your squad
-  <select class="" name="">
-    <option ng-repeat="team in User.userCanBeInvited" value="User.userCanBeInvited._id">{{team.name}}</option>
-  </select>
+  Invite this person to one of your squads
+
+<form name="User.Invite" ng-submit="User.invite(User.user)">
+  <fieldset class="form-group">
+    <label for="squadInvite">User</label>
+    <select class="form-control" id="teamInvite" ng-model="User.squadToInvite">
+      <option value="">Choose a team</option>
+      <option ng-repeat="squad in User.userCanBeInvited" value="{{squad._id}}">{{squad.name}}</option>
+    </select>
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
 </div>

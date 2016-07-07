@@ -2,8 +2,8 @@ angular
 .module('eSquad')
 .controller('UsersController', UsersController);
 
-UsersController.$inject = ['User','CurrentUser', '$state', '$stateParams', '$scope'];
-function UsersController(User, CurrentUser, $state, $stateParams, $scope){
+UsersController.$inject = ['User','Squad','CurrentUser', '$state', '$stateParams', '$scope'];
+function UsersController(User, Squad, CurrentUser, $state, $stateParams, $scope){
 
   var self = this;
 
@@ -17,8 +17,10 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
+
   self.showCarousal  = false;
   self.userCanBeInvited = [];
+  self.invite           = invite;
 
   if (checkLoggedIn()) {
     self.getUsers();
@@ -115,12 +117,29 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
     return !!self.currentUser;
   }
 
+
+  // Invite functions
+  function invite(user){
+    if (!!self.squadToInvite){
+      console.log(self.squadToInvite);
+      console.log(user);
+      self.user.squadsInvited.push(self.squadToInvite);
+      User.update({id: self.user._id}, self.user, function(data){
+          Squad.get({ id: self.squadToInvite }, function(res){
+            var squad = res.squad;
+            squad.invitedMembers.push(self.user);
+            Squad.update({id: self.squadToInvite},squad,function(data){
+            });
+          });
+      });
+    }
+  }
+
   // Tester function
   self.testFunction = function(){
     console.log(" User Test:");
     console.log(this);
   };
-
 
   // Dashboard conditionals - shouldn't be in usersController- move to another service eventually
   if ($state.current.name === 'dashboard'){

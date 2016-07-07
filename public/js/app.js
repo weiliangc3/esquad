@@ -55406,6 +55406,7 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   self.retractApplication = retractApplication;
   self.acceptApplication  = acceptApplication;
   self.toggleAvailability = toggleAvailability;
+  self.acceptInvite       = acceptInvite;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -55471,11 +55472,8 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     self.squad.members.push($scope.$parent.Users.currentUser);
     var currentUserId = $scope.$parent.Users.currentUser._id;
     Squad.save({ squad: self.squad }, function(data){
-      console.log(data);
-      User.addSquad({
-        id: currentUserId,
-        squad: data.squad
-      },function(user){
+      $scope.$parent.Users.currentUser.squads.push(data.squad);
+      User.updateSquads({user: $scope.$parent.Users.currentUser}, function(user){
         $state.go("dashboard");
       });
     });
@@ -55491,8 +55489,11 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
     self.squad.appliedMembers.push($scope.$parent.Users.currentUser);
     Squad.update( {id: self.squad._id}, self.squad, function(data){
       self.isApplied = true;
-      $scope.$parent.Users.currentUser.squadsApplied.push(self.squad);
-      User.update({id: $scope.$parent.Users.currentUser._id}, $scope.$parent.Users.currentUser, function(data){});
+    });
+    var squadToApply = jQuery.extend(true,{},self.squad);
+    console.log(squadToApply);
+    $scope.$parent.Users.currentUser.squadsApplied.push(squadToApply._id);
+    User.updateSquads({user: $scope.$parent.Users.currentUser}, function(data){
     });
   }
   function retractApplication(){
@@ -55502,7 +55503,7 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       self.isApplied = false;
       var squadPos = $scope.$parent.Users.currentUser.squadsApplied.map(function(x){return x._id;}).indexOf(self.squad._id);
       $scope.$parent.Users.currentUser.squadsApplied.splice(squadPos, 1);
-      User.update({id: $scope.$parent.Users.currentUser._id}, $scope.$parent.Users.currentUser, function(data){});
+      User.updateSquads({user: $scope.$parent.Users.currentUser}, function(data){});
     });
   }
   function acceptApplication(user){
@@ -55515,13 +55516,20 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
         selectedUser.squads.push(self.squad);
         var squadPos = selectedUser.squadsApplied.map(function(x){return x._id;}).indexOf(selectedUser.id);
         selectedUser.squadsApplied.splice(squadPos, 1);
-        User.update({id: user._id}, selectedUser, function(data){});
+        User.updateSquads({user: selectedUser},function(data){});
       });
     } else {
       console.log("Unauthorised application acceptance");
     }
   }
 
+  // Invite acceptance
+  function acceptInvite(squadId){
+    console.log("accept invite");
+  }
+
+
+  // Availability Toggle
   function toggleAvailability(){
     if (this.squad.available !== true){
       this.squad.available = true;
@@ -55544,8 +55552,8 @@ angular
 .module('eSquad')
 .controller('UsersController', UsersController);
 
-UsersController.$inject = ['User','CurrentUser', '$state', '$stateParams', '$scope'];
-function UsersController(User, CurrentUser, $state, $stateParams, $scope){
+UsersController.$inject = ['User','Squad','CurrentUser', '$state', '$stateParams', '$scope'];
+function UsersController(User, Squad, CurrentUser, $state, $stateParams, $scope){
 
   var self = this;
 
@@ -55559,8 +55567,10 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
+
   self.showCarousal  = false;
   self.userCanBeInvited = [];
+  self.invite           = invite;
 
   if (checkLoggedIn()) {
     self.getUsers();
@@ -55606,7 +55616,6 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
             self.userCanBeInvited.push(currentUserLeaderOf[i]);
           }
         }
-
         console.log("user can be invited", self.userCanBeInvited);
       });
     });
@@ -55658,12 +55667,29 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
     return !!self.currentUser;
   }
 
+
+  // Invite functions
+  function invite(user){
+    if (!!self.squadToInvite){
+      console.log(self.squadToInvite);
+      console.log(user);
+      self.user.squadsInvited.push(self.squadToInvite);
+      User.update({id: self.user._id}, self.user, function(data){
+          Squad.get({ id: self.squadToInvite }, function(res){
+            var squad = res.squad;
+            squad.invitedMembers.push(self.user);
+            Squad.update({id: self.squadToInvite},squad,function(data){
+            });
+          });
+      });
+    }
+  }
+
   // Tester function
   self.testFunction = function(){
     console.log(" User Test:");
     console.log(this);
   };
-
 
   // Dashboard conditionals - shouldn't be in usersController- move to another service eventually
   if ($state.current.name === 'dashboard'){
@@ -55717,8 +55743,8 @@ function User($resource, API){
         url: API + "/login",
         method: "POST"
       },
-      'addSquad': {
-        url:API + '/users/addSquad',
+      'updateSquads': {
+        url:API + '/users/updateSquads',
         method: 'POST'
       }
     }

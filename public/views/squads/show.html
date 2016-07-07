@@ -1,4 +1,4 @@
-<h2>{{Squads.squad.name}}<span ng-if="Squads.squad.available!==true">: Not available for work</span></h2>
+<h2>{{Squads.squad.name}}<span ng-if="Squads.squad.available!==true">- Not available for work</span></h2>
 
 <p>
   {{Squads.squad.description}}
@@ -32,7 +32,7 @@
 
 <div class="container leaderpanel" ng-if="Squads.isLeader">
   <h3>Leader Panel</h3>
-  <div class="container">
+  <div class="container" ng-if="Squads.squad.appliedMembers.length >0">
     <h4>Applicants</h4>
     <div class="card card-block" ng-repeat="applicant in Squads.squad.appliedMembers">
       <h5 class="card-title">{{applicant.local.fullname}}</h5>

@@ -42,25 +42,25 @@ function usersDelete(req, res){
   });
 }
 
-function usersAddSquad(req, res){
-  User.findById(req.body.id,  function(err, user) {
+// Catchall for updating squads
+function usersUpdateSquads(req,res){
+  User.findById(req.body.user._id,  function(err, user) {
     if (err) return res.status(500).json({message: "Something went wrong!"});
     if (!user) return res.status(404).json({message: 'No user found.'});
-
-    user.squads.push(req.body.squad);
+    user.squads = req.body.user.squads;
+    user.squadsInvited = req.body.user.squadsInvited;
+    user.squadsApplied = req.body.user.squadsApplied;
     user.save(function(err){
       if (err) return res.status(500).json({message: "Something went wrong updating the user!"});
-
       res.status(201).json({message: 'Squad added', user: user});
     });
   });
-
 }
 
 module.exports = {
-  usersIndex:     usersIndex,
-  usersShow:      usersShow,
-  usersUpdate:    usersUpdate,
-  usersDelete:    usersDelete,
-  usersAddSquad:  usersAddSquad
+  usersIndex:         usersIndex,
+  usersShow:          usersShow,
+  usersUpdate:        usersUpdate,
+  usersDelete:        usersDelete,
+  usersUpdateSquads:   usersUpdateSquads
 };

@@ -50,8 +50,6 @@ function squadsDelete(req, res){
     for (i = 0; i < squadToRemove.members.length ; i++){
       var userId = squadToRemove.members[i];
       User.findById(userId, function(err, user){
-        if (err) return res.status(500).json(err);
-        if (!user) return res.status(404).json(err);
         var index = user.squads.indexOf(id);
         if (index > -1) user.squads.splice(index, 1);
         user.save(function(err){
@@ -64,8 +62,6 @@ function squadsDelete(req, res){
     for (i = 0; i < squadToRemove.invitedMembers.length ; i++){
       var userId = squadToRemove.invitedMembers[i];
       User.findById(userId, function(err, user){
-        if (err) return res.status(500).json(err);
-        if (!user) return res.status(404).json(err);
         var index = user.squadsInvited.indexOf(id);
         if (index > -1) user.squadsInvited.splice(index, 1);
         user.save(function(err){
@@ -78,8 +74,6 @@ function squadsDelete(req, res){
     for (i = 0; i < squadToRemove.appliedMembers.length ; i++){
       var userId = squadToRemove.appliedMembers[i];
       User.findById(userId, function(err, user){
-        if (err) return res.status(500).json(err);
-        if (!user) return res.status(404).json(err);
         var index = user.squadsApplied.indexOf(id);
         if (index > -1) user.squadsApplied.splice(index, 1);
         user.save(function(err){
@@ -88,8 +82,6 @@ function squadsDelete(req, res){
       });
     }
   });
-
-
 
   Squad.remove({ _id: id }, function(err) {
     if (err) return res.status(500).json(err);

@@ -21,8 +21,8 @@ function User($resource, API){
         url: API + "/login",
         method: "POST"
       },
-      'addSquad': {
-        url:API + '/users/addSquad',
+      'updateSquads': {
+        url:API + '/users/updateSquads',
         method: 'POST'
       }
     }
