@@ -18,7 +18,7 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
   self.showCarousal  = false;
-  self.currentUserLeaderOf = [];
+  self.userCanBeInvited = [];
 
   if (checkLoggedIn()) {
     self.getUsers();
@@ -27,18 +27,47 @@ function UsersController(User, CurrentUser, $state, $stateParams, $scope){
   if ($stateParams.userId){
     User.get({ id: $stateParams.userId }, function(res){
       self.user = res.user;
-    });
-    User.get({ id: self.currentUser._id}, function(res){
-      var currentUser = res.user;
-      for (i=0;i<currentUser.squads.length;i++){
-        for (j=0;j<currentUser.squads[i].leaders.length;j++){
-          if (currentUser.squads[i].leaders[j] === currentUser._id){
-            self.currentUserLeaderOf.push(currentUser.squads[i]);
+      User.get({ id: self.currentUser._id}, function(res){
+        var currentUserLeaderOf = [];
+        var currentUser = res.user;
+        for (i=0;i<currentUser.squads.length;i++){
+          for (j=0;j<currentUser.squads[i].leaders.length;j++){
+            if (currentUser.squads[i].leaders[j] === currentUser._id){
+              currentUserLeaderOf.push(currentUser.squads[i]);
+            }
           }
         }
-      }
-      console.log("current user leader of (use USER in showpage for list)",  self.currentUserLeaderOf);
+        for (i=0;i<currentUserLeaderOf.length;i++){
+          var found = false;
+          if (!!self.user.squads){
+            for (j=0;j<self.user.squads.length;j++){
+              if (self.user.squads[j]._id === currentUserLeaderOf[i]._id){
+                found = true;
+              }
+            }
+          }
+          if (!!self.user.squadsApplied){
+            for (j=0;j<self.user.squadsApplied.length;j++){
+              if (self.user.squadsApplied[j]._id === currentUserLeaderOf[i]._id){
+                found = true;
+              }
+            }
+          }
+          if (!!self.user.squadsInvited){
+            for (j=0;j<self.user.squadsInvited.length;j++){
+              if (self.user.squadsInvited[j]._id === currentUserLeaderOf[i]._id){
+                found = true;
+              }
+            }
+          }
+          if (found === false) {
+            self.userCanBeInvited.push(currentUserLeaderOf[i]);
+          }
+        }
+        console.log("user can be invited", self.userCanBeInvited);
+      });
     });
+
   }
 
   function getUsers() {
