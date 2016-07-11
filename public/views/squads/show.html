@@ -41,6 +41,14 @@
       <button class="btn btn-default" ng-click="Squads.acceptApplication(applicant)">Accept Application</button>
     </div>
   </div>
+  <div class="container" ng-if="Squads.squad.invitedMembers.length >0">
+    <h4>Invites</h4>
+    <div class="card card-block" ng-repeat="applicant in Squads.squad.invitedMembers">
+      <h5 class="card-title">{{applicant.local.fullname}}</h5>
+      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..</p>
+      <button type="button" class="btn btn-default" name="button" ui-sref="usersShow({ userId: applicant._id })">More details about this user</button>
+    </div>
+  </div>
   <button type="button" class="btn btn-default" name="button" ng-if="Squads.isLeader" ng-click="Squads.toggleAvailability()"><span ng-if="Squads.squad.available!==true">Make this squad available</span><span ng-if="Squads.squad.available===true">Make this squad unavailable</span</button>
 </div>
 

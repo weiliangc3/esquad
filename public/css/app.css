@@ -6243,6 +6243,10 @@ div.div-button:hover {
   color: yellow;
 }
 
+.link {
+  cursor: pointer;
+}
+
 nav.navbar.shrink {
   min-height: 35px;
 }

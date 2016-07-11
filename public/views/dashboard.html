@@ -30,6 +30,6 @@
   <div ng-repeat="squad in User.user.squadsInvited" class="div-button">
     <h4>{{squad.name}}</h4>
     <button class="btn btn-default" ui-sref="squadsShow({squadId: squad._id})" type="button" name="button">Find out more about this squad</button>
-    <button class="btn btn-default" ng-click="Squads.acceptInvite(squad._id)">Accept Invitation</button>
+    <button class="btn btn-default" ng-click="User.acceptInvite(squad._id)">Accept Invitation</button>
   </div>
 </div>

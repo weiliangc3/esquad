@@ -48,7 +48,7 @@ function squadsDelete(req, res){
 
     // Sweep all member records from users
     for (i = 0; i < squadToRemove.members.length ; i++){
-      var userId = squadToRemove.members[i];
+      var userId = squadToRemove.members[i]._id;
       User.findById(userId, function(err, user){
         var index = user.squads.indexOf(id);
         if (index > -1) user.squads.splice(index, 1);
@@ -60,7 +60,7 @@ function squadsDelete(req, res){
 
     // Sweep all invite records from users
     for (i = 0; i < squadToRemove.invitedMembers.length ; i++){
-      var userId = squadToRemove.invitedMembers[i];
+      var userId = squadToRemove.invitedMembers[i]._id;
       User.findById(userId, function(err, user){
         var index = user.squadsInvited.indexOf(id);
         if (index > -1) user.squadsInvited.splice(index, 1);
@@ -72,7 +72,7 @@ function squadsDelete(req, res){
 
     // Sweep all applications from users
     for (i = 0; i < squadToRemove.appliedMembers.length ; i++){
-      var userId = squadToRemove.appliedMembers[i];
+      var userId = squadToRemove.appliedMembers[i]._id;
       User.findById(userId, function(err, user){
         var index = user.squadsApplied.indexOf(id);
         if (index > -1) user.squadsApplied.splice(index, 1);

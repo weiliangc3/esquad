@@ -12,7 +12,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   self.retractApplication = retractApplication;
   self.acceptApplication  = acceptApplication;
   self.toggleAvailability = toggleAvailability;
-  self.acceptInvite       = acceptInvite;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -97,7 +96,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       self.isApplied = true;
     });
     var squadToApply = jQuery.extend(true,{},self.squad);
-    console.log(squadToApply);
     $scope.$parent.Users.currentUser.squadsApplied.push(squadToApply._id);
     User.updateSquads({user: $scope.$parent.Users.currentUser}, function(data){
     });
@@ -128,12 +126,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       console.log("Unauthorised application acceptance");
     }
   }
-
-  // Invite acceptance
-  function acceptInvite(squadId){
-    console.log("accept invite");
-  }
-
 
   // Availability Toggle
   function toggleAvailability(){

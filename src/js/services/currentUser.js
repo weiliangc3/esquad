@@ -2,8 +2,8 @@ angular
   .module('eSquad')
   .service('CurrentUser',CurrentUser);
 
-CurrentUser.$inject = ["TokenService"];
-function CurrentUser(TokenService){
+CurrentUser.$inject = ["TokenService", "User"];
+function CurrentUser(TokenService, User){
     var self        = this;
     self.getUser    = getUser;
     self.clearUser  = clearUser;

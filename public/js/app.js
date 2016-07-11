@@ -55406,7 +55406,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
   self.retractApplication = retractApplication;
   self.acceptApplication  = acceptApplication;
   self.toggleAvailability = toggleAvailability;
-  self.acceptInvite       = acceptInvite;
 
   // self.currentUserId      = $scope.$parent.Users.currentUser._id;
   // self.currentUser        = $scope.$parent.Users.currentUser;
@@ -55491,7 +55490,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       self.isApplied = true;
     });
     var squadToApply = jQuery.extend(true,{},self.squad);
-    console.log(squadToApply);
     $scope.$parent.Users.currentUser.squadsApplied.push(squadToApply._id);
     User.updateSquads({user: $scope.$parent.Users.currentUser}, function(data){
     });
@@ -55522,12 +55520,6 @@ function SquadsController(User, Squad, $state, $stateParams, $scope, Upload, API
       console.log("Unauthorised application acceptance");
     }
   }
-
-  // Invite acceptance
-  function acceptInvite(squadId){
-    console.log("accept invite");
-  }
-
 
   // Availability Toggle
   function toggleAvailability(){
@@ -55567,6 +55559,7 @@ function UsersController(User, Squad, CurrentUser, $state, $stateParams, $scope)
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
+  self.acceptInvite  = acceptInvite;
 
   self.showCarousal  = false;
   self.userCanBeInvited = [];
@@ -55577,49 +55570,7 @@ function UsersController(User, Squad, CurrentUser, $state, $stateParams, $scope)
   }
 
   if ($stateParams.userId){
-    User.get({ id: $stateParams.userId }, function(res){
-      self.user = res.user;
-      User.get({ id: self.currentUser._id}, function(res){
-        var currentUserLeaderOf = [];
-        var currentUser = res.user;
-        for (i=0;i<currentUser.squads.length;i++){
-          for (j=0;j<currentUser.squads[i].leaders.length;j++){
-            if (currentUser.squads[i].leaders[j] === currentUser._id){
-              currentUserLeaderOf.push(currentUser.squads[i]);
-            }
-          }
-        }
-        for (i=0;i<currentUserLeaderOf.length;i++){
-          var found = false;
-          if (!!self.user.squads){
-            for (j=0;j<self.user.squads.length;j++){
-              if (self.user.squads[j]._id === currentUserLeaderOf[i]._id){
-                found = true;
-              }
-            }
-          }
-          if (!!self.user.squadsApplied){
-            for (j=0;j<self.user.squadsApplied.length;j++){
-              if (self.user.squadsApplied[j]._id === currentUserLeaderOf[i]._id){
-                found = true;
-              }
-            }
-          }
-          if (!!self.user.squadsInvited){
-            for (j=0;j<self.user.squadsInvited.length;j++){
-              if (self.user.squadsInvited[j]._id === currentUserLeaderOf[i]._id){
-                found = true;
-              }
-            }
-          }
-          if (found === false) {
-            self.userCanBeInvited.push(currentUserLeaderOf[i]);
-          }
-        }
-        console.log("user can be invited", self.userCanBeInvited);
-      });
-    });
-
+    populateInvites();
   }
 
   function getUsers() {
@@ -55667,14 +55618,14 @@ function UsersController(User, Squad, CurrentUser, $state, $stateParams, $scope)
     return !!self.currentUser;
   }
 
-
   // Invite functions
   function invite(user){
     if (!!self.squadToInvite){
-      console.log(self.squadToInvite);
-      console.log(user);
+      if (user.squadsInvited.indexOf(self.squadToInvite) === -1) return false;
+
       self.user.squadsInvited.push(self.squadToInvite);
-      User.update({id: self.user._id}, self.user, function(data){
+      User.updateSquads({user: self.user}, function(data){
+        console.log("user sent", self.user);
           Squad.get({ id: self.squadToInvite }, function(res){
             var squad = res.squad;
             squad.invitedMembers.push(self.user);
@@ -55683,6 +55634,71 @@ function UsersController(User, Squad, CurrentUser, $state, $stateParams, $scope)
           });
       });
     }
+  }
+
+  function populateInvites(){
+    self.userCanBeInvited = [];
+    User.get({ id: $stateParams.userId }, function(res){
+      self.user = res.user;
+      User.get({ id: self.currentUser._id}, function(res){
+        var currentUserLeaderOf = [];
+        var currentUser = res.user;
+        for (i=0;i<currentUser.squads.length;i++){
+          for (j=0;j<currentUser.squads[i].leaders.length;j++){
+            if (currentUser.squads[i].leaders[j] === currentUser._id){
+              currentUserLeaderOf.push(currentUser.squads[i]);
+            }
+          }
+        }
+        for (i=0;i<currentUserLeaderOf.length;i++){
+          var found = false;
+          if (!!self.user.squads){
+            for (j=0;j<self.user.squads.length;j++){
+              if (self.user.squads[j]._id === currentUserLeaderOf[i]._id){
+                found = true;
+              }
+            }
+          }
+          if (!!self.user.squadsApplied){
+            for (j=0;j<self.user.squadsApplied.length;j++){
+              if (self.user.squadsApplied[j]._id === currentUserLeaderOf[i]._id){
+                found = true;
+              }
+            }
+          }
+          if (!!self.user.squadsInvited){
+            for (j=0;j<self.user.squadsInvited.length;j++){
+              if (self.user.squadsInvited[j]._id === currentUserLeaderOf[i]._id){
+                found = true;
+              }
+            }
+          }
+          if (found === false) {
+            self.userCanBeInvited.push(currentUserLeaderOf[i]);
+          }
+        }
+      });
+    });
+  }
+
+  function acceptInvite(squadId){
+    Squad.get({id: squadId},function(res){
+      var squad = res.squad;
+      var inviteIndex =  squad.invitedMembers.map(function(x){return x._id;}).indexOf(self.currentUser._id);
+      squad.invitedMembers.splice(inviteIndex, 1);
+      var userToApply = jQuery.extend(true,{},self.currentUser);
+      squad.members.push(userToApply);
+      Squad.update( {id: squadId}, squad, function(data){});
+      var squadIndex = self.currentUser.squadsInvited.map(function(x){return x._id;}).indexOf(squadId);
+      self.currentUser.squadsInvited.splice(squadIndex, 1);
+      var squadToApply = jQuery.extend(true,{},squad);
+      self.currentUser.squads.push(squadToApply);
+      User.updateSquads({user: self.currentUser}, function(data){
+        if ($state.current.name === 'dashboard'){
+          self.user = self.currentUser;
+        }
+      });
+    });
   }
 
   // Tester function
@@ -55783,8 +55799,8 @@ angular
   .module('eSquad')
   .service('CurrentUser',CurrentUser);
 
-CurrentUser.$inject = ["TokenService"];
-function CurrentUser(TokenService){
+CurrentUser.$inject = ["TokenService", "User"];
+function CurrentUser(TokenService, User){
     var self        = this;
     self.getUser    = getUser;
     self.clearUser  = clearUser;
